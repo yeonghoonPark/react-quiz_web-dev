@@ -6,7 +6,7 @@ function Notice() {
     <>
       <h1>Notice Test</h1>
       <Link to={"/"}>
-        <BaseButton message={"Home"} fontSize={"50px"} />
+        <BaseButton message={"Home"} />
       </Link>
     </>
   );
