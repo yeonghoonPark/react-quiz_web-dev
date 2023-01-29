@@ -7,3 +7,12 @@
   font-weight: 500;
   /* line-height: 1rem; */
 }
+
+img {
+  width: 100%;
+  vertical-align: top;
+}
+
+a {
+  text-decoration: none;
+}
