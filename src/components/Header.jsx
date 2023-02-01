@@ -1,7 +1,10 @@
 import styled from "styled-components";
 import logo from "../../public/assets/images/logo.png";
 import { FaBars } from "react-icons/fa";
+import { FaUserCheck } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { onLogin, onLogout } from "../reducers/login";
 
 const StyledHeader = styled.header`
   position: fixed;
@@ -11,18 +14,15 @@ const StyledHeader = styled.header`
   padding: 0.75rem 0;
   box-shadow: 0 4px 4px -4px var(--color-black);
   background-color: var(--color-white);
-  text-align: center;
 `;
 
 const Nav = styled.nav`
   postion: relative;
   display: felx;
   justify-contents: space-between;
-  align-items: center;
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 1.5rem;
-  background-color: ;
   @media all and (max-width: 47.9375rem) {
     justify-contents: center;
   }
@@ -35,8 +35,6 @@ const LogoDiv = styled.div`
   transition: 0.3s;
   &:hover {
     transform: rotate(17deg);
-  }
-  @media all and (min-width: 30rem) and (max-width: 47.9375rem) {
   }
 `;
 
@@ -51,10 +49,7 @@ const MenuRightDiv = styled.div`
 `;
 
 const Div = styled.div`
-  width: ${(p) => p.width || {}};
-  height: ${(p) => p.height || {}};
   padding: 8px;
-  margin-right: ${(p) => p.marginRight || {}};
   &:hover {
     text-shadow: 2px 2px var(--color-gray-300);
   }
@@ -68,14 +63,52 @@ const FaBarsIcon = styled(FaBars)`
   font-size: 1rem;
   cursor: pointer;
   @media all and (max-width: 47.9375rem) {
-    display: block;
     position: absolute;
     right: 0;
+    display: block;
     margin-right: 1.5rem;
   }
 `;
 
+const FaUserCheckIcon = styled(FaUserCheck)`
+  @media all and (max-width: 47.9375rem) {
+    display: none;
+  }
+`;
+
+const SideNav = styled.nav`
+  position: fixed;
+  top: 0;
+  right: -406px;
+
+  width: 400px;
+  min-width: 360px;
+  height: 100vh;
+  box-shadow: -4px 0 4px -4px var(--color-black);
+  background: var(--color-white);
+`;
+
+const BlockLayer = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+`;
+
+const testFunction = () => {
+  console.log("테스트");
+  const SideNav = document.querySelector(".side-nav");
+  console.log(SideNav);
+  SideNav.style.right = "0";
+};
+
 function Header() {
+  const storeState = useSelector((state) => state);
+  const dispatch = useDispatch();
+  const user_nickname = storeState.login.user_nickname;
+
   return (
     <StyledHeader>
       <Nav>
@@ -88,24 +121,45 @@ function Header() {
           <Div>
             <Link to='/quiz'>Quiz</Link>
           </Div>
-
           <Div>
             <Link to='/quiz'>Ranking</Link>
           </Div>
           <Div>
             <Link to='/quiz'>Notice</Link>
           </Div>
+          {user_nickname ? (
+            <Div>
+              <Link to='/write'>Write</Link>
+            </Div>
+          ) : null}
           <Div>
             <Link to='/quiz'>Help</Link>
           </Div>
         </MenuLeftDiv>
         <MenuRightDiv>
-          <Div>
-            <Link to='/login'>Login</Link>
-          </Div>
-          <FaBarsIcon />
+          {user_nickname ? (
+            <>
+              <FaUserCheckIcon />
+              <Div>{user_nickname}</Div>
+              <Div>
+                <Link to='' onClick={() => dispatch(onLogout())}>
+                  Logout
+                </Link>
+              </Div>
+            </>
+          ) : (
+            <Div>
+              <Link to='' onClick={() => dispatch(onLogin())}>
+                Login
+              </Link>
+            </Div>
+          )}
+          <FaBarsIcon onClick={() => testFunction()} />
         </MenuRightDiv>
       </Nav>
+
+      {/* <BlockLayer /> */}
+      <SideNav className='side-nav'></SideNav>
     </StyledHeader>
   );
 }
