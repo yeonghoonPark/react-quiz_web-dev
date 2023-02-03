@@ -25,15 +25,32 @@
   --color-hover-fink: #d85555;
   --color-hover-light-green: #5fad72;
 
-  --base-transition: 0.3s;
+  --transition-300: 0.3s;
+  --transition-500: 0.5s;
 }
 
 body {
   height: calc(100vh - 66px);
-  /* background-color: var(--color-black); */
+}
+
+body[data-theme="light"] {
+  color: var(--color-black);
   background: linear-gradient(
     to top,
     var(--color-white) 50%,
     var(--color-gray-300)
   );
+}
+
+body[data-theme="dark"] {
+  color: var(--color-gray-100);
+  background: linear-gradient(
+    to top,
+    var(--color-black) 50%,
+    var(--color-gray-900)
+  );
+}
+
+header {
+  color: var(--color-black);
 }
