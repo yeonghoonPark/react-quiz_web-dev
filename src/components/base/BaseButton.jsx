@@ -13,7 +13,7 @@ const StyledButton = styled.button`
   font-size: ${(p) => p.fontSize || "1.2rem"};
   background-color: ${(p) => p.backgroundColor || "var(--color-blue)"};
   cursor: pointer;
-  transition: var(--base-transition);
+  transition: var(--transition-300);
   &:hover{
     background-color: ${(p) =>
       p.hoverBackgroundColor || "var(--color-hover-blue)"} ;

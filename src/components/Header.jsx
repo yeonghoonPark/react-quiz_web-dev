@@ -1,12 +1,14 @@
 import styled from "styled-components";
 import logo from "../../public/assets/images/logo.png";
 import { FaBars } from "react-icons/fa";
-import { FaUserCheck } from "react-icons/fa";
-import { FaRegWindowClose } from "react-icons/fa";
-
+import { FaUser } from "react-icons/fa";
+import { FaTimes } from "react-icons/fa";
+import { FaSun } from "react-icons/fa";
+import { FaMoon } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { onLogin, onLogout } from "../reducers/login";
+import { useEffect, useState } from "react";
 
 const StyledHeader = styled.header`
   position: fixed;
@@ -15,6 +17,7 @@ const StyledHeader = styled.header`
   height: 66px;
   padding: 0.75rem 0;
   box-shadow: 0 4px 4px -4px var(--color-black);
+
   background-color: var(--color-white);
 `;
 
@@ -66,7 +69,7 @@ const Div = styled.div`
 
 const FaBarsIcon = styled(FaBars)`
   display: none;
-  font-size: 1rem;
+  font-size: 18px;
   cursor: pointer;
   @media all and (max-width: 47.9375rem) {
     position: absolute;
@@ -76,9 +79,9 @@ const FaBarsIcon = styled(FaBars)`
   }
 `;
 
-const FaUserCheckIcon = styled(FaUserCheck)`
-  margin-right: 8px;
-  font-size: 18px;
+const FaUserIcon = styled(FaUser)`
+  margin-right: 4px;
+  font-size: 17px;
   @media all and (max-width: 47.9375rem) {
     display: ;
   }
@@ -87,21 +90,36 @@ const FaUserCheckIcon = styled(FaUserCheck)`
 const SideNav = styled.nav`
   position: fixed;
   top: 0;
-  right: -406px;
+  right: -100%;
   width: 400px;
   min-width: 360px;
   height: 100vh;
   box-shadow: -4px 0 4px -4px var(--color-black);
   background: var(--color-white);
+  transition: var(--transition-500);
+  &.show {
+    right: 0;
+  }
 `;
 
 const BlockLayer = styled.div`
   position: fixed;
-  top: 0;
+  top: -100%;
   left: 0;
   width: 100vw;
   height: 100vh;
   background: rgba(0, 0, 0, 0.5);
+  transition: var(--transition-500);
+  opacity: 0;
+  &.show {
+    top: 0;
+    opacity: 1;
+  }
+`;
+
+const FaTimesIcon = styled(FaTimes)`
+  font-size: 18px;
+  cursor: pointer;
 `;
 
 const SideMenuDiv = styled.div`
@@ -119,18 +137,16 @@ const SideMenuTopDiv = styled(Div)`
   height: 66px;
 `;
 
-const FaRegWindowCloseIcon = styled(FaRegWindowClose)`
-  font-size: 18px;
-`;
-
 const SideMenuMiddleDiv = styled(Div)`
   display: flex;
   flex-direction: column;
 `;
 
 const SideMenuBottomDiv = styled(SideMenuTopDiv)`
-  justify-content: ${(p) => p.justifyContent || "space-between"};
+  justify-content: flex-end;
 `;
+
+const SideMenuThemeDiv = styled(SideMenuBottomDiv)``;
 
 const Span = styled.span`
   pointer-events: ${(p) => p.pointerEvents || "auto"};
@@ -139,24 +155,37 @@ const Span = styled.span`
   }
 `;
 
-const testFunction = () => {
-  console.log("테스트");
-  const SideNav = document.querySelector(".side-nav");
-  console.log(SideNav);
-  SideNav.style.right = "0";
-};
+const FaMoonIcon = styled(FaMoon)`
+  font-size: 14px;
+  cursor: pointer;
+`;
+const FaSunIcon = styled(FaSun)`
+  font-size: 14px;
+  cursor: pointer;
+`;
 
-const testFunction2 = () => {
-  console.log("테스트");
-  const SideNav = document.querySelector(".side-nav");
-  console.log(SideNav);
-  SideNav.style.right = "-406px";
+const onHandleSideNav = () => {
+  console.log("[onHandleSideNav]");
+  const sideNav = document.querySelector(".side-nav");
+  const blockLayer = document.querySelector(".block-layer");
+  sideNav.classList.toggle("show"), blockLayer.classList.toggle("show");
 };
 
 function Header() {
   const storeState = useSelector((state) => state);
   const dispatch = useDispatch();
   const user_nickname = storeState.login.user_nickname;
+
+  const [theme, setTheme] = useState("light");
+
+  const onHandleTheme = () => {
+    console.log("[onHandleTheme]");
+    setTheme(theme === "light" ? "dark" : "light");
+  };
+
+  useEffect(() => {
+    document.body.dataset.theme = theme;
+  }, [theme]);
 
   return (
     <StyledHeader>
@@ -197,25 +226,13 @@ function Header() {
         </MenuLeftDiv>
         <MenuRightDiv>
           {user_nickname ? (
-            <>
-              <Div
-                mobileDisplay={"none"}
-                display={"flex"}
-                alignItems={"center"}
-              >
-                <FaUserCheckIcon />
-                <Span pointerEvents={"none"} textShadow={"none"}>
-                  {user_nickname}
-                </Span>
-              </Div>
-              <Div mobileDisplay={"none"}>
-                <Span>
-                  <Link to='' onClick={() => dispatch(onLogout())}>
-                    Logout
-                  </Link>
-                </Span>
-              </Div>
-            </>
+            <Div mobileDisplay={"none"}>
+              <Span>
+                <Link to='' onClick={() => dispatch(onLogout())}>
+                  Logout
+                </Link>
+              </Span>
+            </Div>
           ) : (
             <Div mobileDisplay={"none"}>
               <Span>
@@ -225,11 +242,20 @@ function Header() {
               </Span>
             </Div>
           )}
-          <FaBarsIcon onClick={() => testFunction()} />
+          {theme === "light" ? (
+            <Div mobileDisplay={"none"} display={"flex"} alignItems={"center"}>
+              <FaSunIcon onClick={() => onHandleTheme()} />
+            </Div>
+          ) : (
+            <Div mobileDisplay={"none"} display={"flex"} alignItems={"center"}>
+              <FaMoonIcon onClick={() => onHandleTheme()} />
+            </Div>
+          )}
+          <FaBarsIcon onClick={() => onHandleSideNav()} />
         </MenuRightDiv>
       </Nav>
 
-      {/* <BlockLayer /> */}
+      <BlockLayer className='block-layer' onClick={() => onHandleSideNav()} />
       <SideNav className='side-nav'>
         <SideMenuDiv>
           <SideMenuTopDiv
@@ -240,8 +266,9 @@ function Header() {
               <Span pointerEvents={"none"}>Quiz-Web</Span>
             </Div>
 
-            <FaRegWindowCloseIcon onClick={() => testFunction2()} />
+            <FaTimesIcon onClick={() => onHandleSideNav()} />
           </SideMenuTopDiv>
+
           <SideMenuMiddleDiv
             boxShadow={" 0 4px 4px -4px var(--color-gray-600)"}
           >
@@ -273,14 +300,11 @@ function Header() {
               </Span>
             </Div>
           </SideMenuMiddleDiv>
-          {user_nickname ? (
-            <SideMenuBottomDiv>
-              <Div display={"flex"} alignItems={"center"}>
-                <FaUserCheckIcon />
-                <Span pointerEvents={"none"} textShadow={"none"}>
-                  {user_nickname}
-                </Span>
-              </Div>
+
+          <SideMenuBottomDiv
+            boxShadow={" 0 4px 4px -4px var(--color-gray-600)"}
+          >
+            {user_nickname ? (
               <Div>
                 <Span>
                   <Link to='' onClick={() => dispatch(onLogout())}>
@@ -288,9 +312,7 @@ function Header() {
                   </Link>
                 </Span>
               </Div>
-            </SideMenuBottomDiv>
-          ) : (
-            <SideMenuBottomDiv justifyContent={"flex-end"}>
+            ) : (
               <Div>
                 <Span>
                   <Link to='' onClick={() => dispatch(onLogin())}>
@@ -298,8 +320,20 @@ function Header() {
                   </Link>
                 </Span>
               </Div>
-            </SideMenuBottomDiv>
-          )}
+            )}
+          </SideMenuBottomDiv>
+
+          <SideMenuThemeDiv>
+            {theme === "light" ? (
+              <Div>
+                <FaSunIcon onClick={() => onHandleTheme()} />
+              </Div>
+            ) : (
+              <Div>
+                <FaMoonIcon onClick={() => onHandleTheme()} />
+              </Div>
+            )}
+          </SideMenuThemeDiv>
         </SideMenuDiv>
       </SideNav>
     </StyledHeader>
