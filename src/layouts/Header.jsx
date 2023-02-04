@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import logo from "../../public/assets/images/logo.png";
-import BaseDiv from "./base/BaseDiv";
-import BaseSpan from "./base/BaseSpan";
+import BaseDiv from "../components/base/BaseDiv";
+import BaseSpan from "../components/base/BaseSpan";
 import { FaBars, FaTimes, FaSun, FaMoon } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -173,7 +173,7 @@ function Header() {
             </Link>
           </BaseDiv>
           <BaseDiv mobileDisplayNone>
-            <Link to='/quiz'>
+            <Link to='/ranking'>
               <BaseSpan textShadow>Ranking</BaseSpan>
             </Link>
           </BaseDiv>

@@ -1,4 +1,4 @@
-import BaseButton from "./base/BaseButton";
+import BaseButton from "../components/base/BaseButton";
 import { Link } from "react-router-dom";
 
 function Home() {

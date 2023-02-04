@@ -1,10 +1,10 @@
-import BaseButton from "./base/BaseButton";
+import BaseButton from "../../components/base/BaseButton";
 import { Link } from "react-router-dom";
 
-function Notice() {
+function NoticeWrite() {
   return (
     <div style={{ marginTop: "66px" }}>
-      <h1>Notice Test</h1>
+      <h1>Write Test</h1>
       <Link to={"/"}>
         <BaseButton message={"Home"} />
       </Link>
@@ -12,4 +12,4 @@ function Notice() {
   );
 }
 
-export default Notice;
+export default NoticeWrite;
