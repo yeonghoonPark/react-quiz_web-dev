@@ -1,7 +1,9 @@
 import styled from "styled-components";
 
 const StyledSpan = styled.div`
+  cursor: ${(p) => (p.pointer ? "pointer" : {})};
   pointer-events: ${(p) => (p.pointerEventsNone ? "none" : "auto")};
+
   &:hover {
     text-shadow: ${(p) =>
       p.textShadow ? "2px 2px var(--color-gray-300)" : {}};
@@ -14,9 +16,13 @@ const StyledSpan = styled.div`
   }
 `;
 
-function BaseSpan({ pointerEventsNone, textShadow, children }) {
+function BaseSpan({ pointer, pointerEventsNone, textShadow, children }) {
   return (
-    <StyledSpan pointerEventsNone={pointerEventsNone} textShadow={textShadow}>
+    <StyledSpan
+      pointer={pointer}
+      pointerEventsNone={pointerEventsNone}
+      textShadow={textShadow}
+    >
       {children}
     </StyledSpan>
   );
