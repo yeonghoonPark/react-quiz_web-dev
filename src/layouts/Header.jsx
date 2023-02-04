@@ -227,7 +227,7 @@ function Header() {
         <SideMenuDiv>
           <SideMenuTopDiv>
             <BaseDiv>
-              <BaseSpan pointerEvents={"none"}>Quiz-Web</BaseSpan>
+              <BaseSpan pointerEventsNone>Quiz-Web</BaseSpan>
             </BaseDiv>
 
             <FaTimesIcon onClick={() => onHandleSideNav()} />
