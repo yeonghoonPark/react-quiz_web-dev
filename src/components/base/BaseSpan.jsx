@@ -16,12 +16,19 @@ const StyledSpan = styled.div`
   }
 `;
 
-function BaseSpan({ pointer, pointerEventsNone, textShadow, children }) {
+function BaseSpan({
+  pointer,
+  pointerEventsNone,
+  textShadow,
+  onClick,
+  children,
+}) {
   return (
     <StyledSpan
       pointer={pointer}
       pointerEventsNone={pointerEventsNone}
       textShadow={textShadow}
+      onClick={onClick}
     >
       {children}
     </StyledSpan>
