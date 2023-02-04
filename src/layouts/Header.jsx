@@ -136,6 +136,7 @@ const FaSunIcon = styled(FaSun)`
 `;
 
 function Header() {
+  console.log("[Header]");
   const storeState = useSelector((state) => state);
   const dispatch = useDispatch();
   const user_nickname = storeState.login.user_nickname;
@@ -184,15 +185,15 @@ function Header() {
           </BaseDiv>
           {user_nickname ? (
             <BaseDiv mobileDisplayNone>
-              <Link to='/write'>
+              <Link to='/notice/write'>
                 <BaseSpan textShadow>Write</BaseSpan>
               </Link>
             </BaseDiv>
           ) : null}
           <BaseDiv mobileDisplayNone>
-            <Link to='/quiz'>
-              <BaseSpan textShadow>Help</BaseSpan>
-            </Link>
+            <BaseSpan pointer textShadow>
+              Help
+            </BaseSpan>
           </BaseDiv>
         </MenuLeftDiv>
         <MenuRightDiv>
@@ -235,31 +236,31 @@ function Header() {
 
           <SideMenuMiddleDiv>
             <BaseDiv margin={"12px auto"}>
-              <Link to='/quiz'>
+              <Link to='/quiz' onClick={() => onHandleSideNav()}>
                 <BaseSpan textShadow>Quiz</BaseSpan>
               </Link>
             </BaseDiv>
             <BaseDiv margin={"12px auto"}>
-              <Link to='/quiz'>
+              <Link to='/ranking' onClick={() => onHandleSideNav()}>
                 <BaseSpan textShadow>Ranking</BaseSpan>
               </Link>
             </BaseDiv>
             <BaseDiv margin={"12px auto"}>
-              <Link to='/quiz'>
+              <Link to='/notice' onClick={() => onHandleSideNav()}>
                 <BaseSpan textShadow>Notice</BaseSpan>
               </Link>
             </BaseDiv>
             {user_nickname ? (
               <BaseDiv margin={"12px auto"}>
-                <Link to='/quiz'>
+                <Link to='/notice/write' onClick={() => onHandleSideNav()}>
                   <BaseSpan textShadow>Write</BaseSpan>
                 </Link>
               </BaseDiv>
             ) : null}
             <BaseDiv margin={"12px auto"}>
-              <Link to=''>
-                <BaseSpan textShadow>Help</BaseSpan>
-              </Link>
+              <BaseSpan pointer textShadow onClick={() => onHandleSideNav()}>
+                Help
+              </BaseSpan>
             </BaseDiv>
           </SideMenuMiddleDiv>
 
