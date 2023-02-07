@@ -205,7 +205,7 @@ function Header() {
             </BaseDiv>
           ) : (
             <BaseDiv mobileDisplayNone>
-              <Link to='' onClick={() => dispatch(onLogin())}>
+              <Link to='/login'>
                 <BaseSpan textShadow>Login</BaseSpan>
               </Link>
             </BaseDiv>
