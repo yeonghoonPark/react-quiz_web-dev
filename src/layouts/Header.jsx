@@ -54,9 +54,8 @@ const MenuRightDiv = styled.div`
 const SideNav = styled.nav`
   position: fixed;
   top: 0;
-  right: -100%;
-  width: 400px;
-  min-width: 360px;
+  right: -364px;
+  width: 360px;
   height: 100vh;
   box-shadow: -4px 0 4px -4px var(--color-black);
   background: var(--color-white);
