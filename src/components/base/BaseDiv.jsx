@@ -4,8 +4,10 @@ const StyledDiv = styled.div`
   display: ${(p) => p.display || {}};
   justify-content: ${(p) => p.justifyContent || {}};
   align-items: ${(p) => p.alignItems || {}};
-  width: ${(p) => p.width || "auto"};
-  height: ${(p) => p.height || "auto"};
+  width: ${(p) => p.width || {}};
+  max-width: ${(p) => p.maxWidth || {}};
+  min-width: ${(p) => p.minWidth || {}};
+  height: ${(p) => p.height || {}};
   margin: ${(p) => p.margin || {}};
   padding: ${(p) => p.padding || "8px"};
   box-shadow: ${(p) => p.boxShadow || {}};
@@ -23,6 +25,8 @@ function BaseDiv({
   justifyContent,
   alignItems,
   width,
+  maxWidth,
+  minWidth,
   margin,
   padding,
   boxShadow,
@@ -36,6 +40,8 @@ function BaseDiv({
       justifyContent={justifyContent}
       alignItems={alignItems}
       width={width}
+      maxWidth={maxWidth}
+      minWidth={minWidth}
       margin={margin}
       padding={padding}
       boxShadow={boxShadow}
