@@ -51,6 +51,10 @@ body[data-theme="dark"] {
   );
 }
 
+body[data-theme="dark"] input {
+  color: var(--color-black);
+}
+
 header {
   color: var(--color-black);
 }
