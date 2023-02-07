@@ -8,9 +8,9 @@ const StyledButton = styled.button`
   margin-bottom: ${(p) => p.marginBottom || {}};
   padding: 8px 12px;
   border: none;
-  border-radius: 2px;
+  border-radius: 5px;
   color: ${(p) => p.color || "var(--color-white)"}};
-  font-size: ${(p) => p.fontSize || "1.2rem"};
+  font-size: ${(p) => p.fontSize || "1rem"};
   background-color: ${(p) => p.backgroundColor || "var(--color-blue)"};
   cursor: pointer;
   transition: var(--transition-300);
@@ -36,7 +36,7 @@ function BaseButton({
   backgroundColor,
   hoverBackgroundColor,
   fontSize,
-  buttonClick,
+  onClick,
   message,
 }) {
   return (
@@ -50,7 +50,7 @@ function BaseButton({
       backgroundColor={backgroundColor}
       hoverBackgroundColor={hoverBackgroundColor}
       fontSize={fontSize}
-      onClick={buttonClick}
+      onClick={onClick}
     >
       {message}
     </StyledButton>
