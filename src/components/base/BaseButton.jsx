@@ -1,12 +1,13 @@
 import styled from "styled-components";
 
 const StyledButton = styled.button`
+  width: ${(p) => p.width || {}};
   margin: ${(p) => p.margin || {}};
   margin-left: ${(p) => p.marginLeft || {}};
   margin-top: ${(p) => p.marginTop || {}};
   margin-right: ${(p) => p.marginRight || {}};
   margin-bottom: ${(p) => p.marginBottom || {}};
-  padding: 8px 12px;
+  padding: ${(p) => p.padding || "8px 12px"} ;
   border: none;
   border-radius: 5px;
   color: ${(p) => p.color || "var(--color-white)"}};
@@ -27,11 +28,13 @@ const StyledButton = styled.button`
 `;
 
 function BaseButton({
+  width,
   margin,
   marginLeft,
   marginTop,
   marginRight,
   marginBottom,
+  padding,
   color,
   backgroundColor,
   hoverBackgroundColor,
@@ -41,11 +44,13 @@ function BaseButton({
 }) {
   return (
     <StyledButton
+      width={width}
       margin={margin}
       marginLeft={marginLeft}
       marginTop={marginTop}
       marginRight={marginRight}
       marginBottom={marginBottom}
+      padding={padding}
       color={color}
       backgroundColor={backgroundColor}
       hoverBackgroundColor={hoverBackgroundColor}
