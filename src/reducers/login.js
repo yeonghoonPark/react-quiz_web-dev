@@ -1,7 +1,6 @@
 const currentState = {
   user_id: null,
   user_password: null,
-  user_nickname: null,
 };
 
 const ON_LOGIN = "LOGIN/ON_LOGIN";
@@ -18,9 +17,9 @@ export const onLogout = () => ({
 const login = (state = currentState, action) => {
   switch (action.type) {
     case ON_LOGIN:
-      return { ...state, user_nickname: (state.user_nickname = "석가Morning") };
+      return { ...state, user_id: state.user_id };
     case ON_LOGOUT:
-      return { ...state, user_nickname: (state.user_nickname = null) };
+      return { ...state, user_id: (state.user_id = null) };
     default:
       return state;
   }
