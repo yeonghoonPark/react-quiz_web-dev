@@ -10,7 +10,7 @@ const StyledInput = styled.input`
   transition: var(--transition-300);
   &:focus {
     border: 1px solid var(--color-gray-500);
-    box-shadow: 0 0 4px 2px var(--color-gray-400);
+    box-shadow: 0 0 2px 2px var(--color-gray-400);
   }
   &::placeholder {
     color: var(--color-gray-500);
@@ -22,8 +22,16 @@ const StyledInput = styled.input`
   }
 `;
 
-function BaseInput({ type, id, placeholder }) {
-  return <StyledInput type={type} id={id} placeholder={placeholder} />;
+function BaseInput({ type, value, id, placeholder, onChange }) {
+  return (
+    <StyledInput
+      type={type}
+      value={value}
+      id={id}
+      placeholder={placeholder}
+      onChange={onChange}
+    />
+  );
 }
 
 export default BaseInput;
