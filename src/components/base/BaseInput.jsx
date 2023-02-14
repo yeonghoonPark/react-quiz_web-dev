@@ -22,14 +22,24 @@ const StyledInput = styled.input`
   }
 `;
 
-function BaseInput({ type, value, id, placeholder, onChange }) {
+function BaseInput({
+  inputRef,
+  type,
+  value,
+  id,
+  placeholder,
+  onChange,
+  onKeyUp,
+}) {
   return (
     <StyledInput
+      ref={inputRef}
       type={type}
       value={value}
       id={id}
       placeholder={placeholder}
       onChange={onChange}
+      onKeyUp={onKeyUp}
     />
   );
 }
