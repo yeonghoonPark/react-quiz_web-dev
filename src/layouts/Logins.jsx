@@ -6,7 +6,7 @@ import BaseButton from "../components/base/BaseButton";
 import BaseSpan from "../components/base/BaseSpan";
 import naverIcon from "../../public/assets/images/icon_naver.png";
 import kakaoIcon from "../../public/assets/images/icon_kakao.png";
-import { useEffect, useState, useCallback, memo, useRef } from "react";
+import { useRef, useLayoutEffect, useState, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { onLogin } from "../reducers/login";
 
@@ -39,30 +39,38 @@ const ImageBoxDiv = styled.div`
 
 function Login() {
   console.log("[Login]");
+
   const storeState = useSelector((state) => state);
   const dispatch = useDispatch();
 
-  const enteredId = useRef(null);
-  const enteredPassword = useRef(null);
+  const inputRefId = useRef(null);
+  const inputRefPassword = useRef(null);
 
-  const getUserId = (e) => {
-    console.log("[getUserId]");
-    enteredId.current = e.target.value;
-  };
-
-  const getUserPassword = (e) => {
-    console.log("[getUserPassword]");
-    enteredPassword.current = e.target.value;
-  };
+  const [inputValueId, setInputValueId] = useState("");
+  const [inputValuePassword, setInputValuePassword] = useState("");
 
   const onHandleLogin = (e) => {
     console.log("[onHandleLogin]");
     e.preventDefault();
-    storeState.login.user_id = enteredId.current;
-    storeState.login.user_password = enteredPassword.current;
-    dispatch(onLogin());
-    console.log(storeState, "@중앙스테이트 로그인");
+
+    if (inputValueId === "") {
+      alert("아이디를 입력해주세요");
+      inputRefId.current.focus();
+    } else if (inputValuePassword === "") {
+      alert("비밀번호를 입력해주세요");
+      inputRefPassword.current.focus();
+    } else {
+      storeState.login.user_id = inputValueId;
+      storeState.login.user_password = inputValuePassword;
+      dispatch(onLogin());
+      alert("로그인 성공");
+      console.log(storeState, "@@");
+    }
   };
+
+  useLayoutEffect(() => {
+    inputRefId.current.focus();
+  }, []);
 
   return (
     <BaseContainer>
@@ -72,19 +80,23 @@ function Login() {
         <BaseDiv width={"33%"} minWidth={"314px"} padding={"8px 0"}>
           <label htmlFor='userId' style={{ display: "none" }} />
           <BaseInput
+            inputRef={inputRefId}
             type={"text"}
+            value={inputValueId}
             id={"userId"}
             placeholder={"아이디 또는 이메일"}
-            onChange={(e) => getUserId(e)}
+            onChange={(e) => setInputValueId(e.target.value)}
           />
         </BaseDiv>
         <BaseDiv width={"33%"} minWidth={"314px"} padding={"8px 0"}>
           <label htmlFor='userPassword' style={{ display: "none" }} />
           <BaseInput
+            inputRef={inputRefPassword}
             type={"password"}
+            value={inputValuePassword}
             id={"userPassword"}
             placeholder={"비밀번호"}
-            onChange={(e) => getUserPassword(e)}
+            onChange={(e) => setInputValuePassword(e.target.value)}
           />
         </BaseDiv>
         <BaseDiv width={"33%"} minWidth={"314px"} padding={"8px 0"}>
@@ -143,4 +155,4 @@ function Login() {
   );
 }
 
-export default memo(Login);
+export default Login;
