@@ -8,7 +8,8 @@ import naverIcon from "../../public/assets/images/icon_naver.png";
 import kakaoIcon from "../../public/assets/images/icon_kakao.png";
 import { useRef, useLayoutEffect, useState, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { onLogin } from "../reducers/login";
+import { onLogin, onLoginWithKakao } from "../reducers/login";
+import { useNavigate } from "react-router-dom";
 
 const TitleH1 = styled.h1`
   margin-bottom: 1.5rem;
@@ -16,6 +17,7 @@ const TitleH1 = styled.h1`
   font-size: 2rem;
   font-weight: 700;
   text-align: center;
+  pointer-events: none;
 `;
 
 const LoginForm = styled.form`
@@ -40,8 +42,11 @@ const ImageBoxDiv = styled.div`
 function Login() {
   console.log("[Login]");
 
+  // state's
   const storeState = useSelector((state) => state);
   const dispatch = useDispatch();
+
+  console.log(storeState.login, "@로그인");
 
   const inputRefId = useRef(null);
   const inputRefPassword = useRef(null);
@@ -49,28 +54,62 @@ function Login() {
   const [inputValueId, setInputValueId] = useState("");
   const [inputValuePassword, setInputValuePassword] = useState("");
 
+  const [isNoneId, setIsNoneId] = useState(false);
+  const [isNonePassword, setIsNonePassword] = useState(false);
+
+  const navigate = useNavigate();
+
+  // function's
+
+  useLayoutEffect(() => {
+    inputRefId.current.focus();
+  }, []);
+
   const onHandleLogin = (e) => {
     console.log("[onHandleLogin]");
     e.preventDefault();
-
     if (inputValueId === "") {
-      alert("아이디를 입력해주세요");
+      setIsNoneId(true);
       inputRefId.current.focus();
     } else if (inputValuePassword === "") {
-      alert("비밀번호를 입력해주세요");
+      setIsNonePassword(true);
       inputRefPassword.current.focus();
     } else {
       storeState.login.user_id = inputValueId;
       storeState.login.user_password = inputValuePassword;
       dispatch(onLogin());
-      alert("로그인 성공");
+      navigate("/");
       console.log(storeState, "@@");
     }
   };
 
-  useLayoutEffect(() => {
-    inputRefId.current.focus();
-  }, []);
+  const onHandleLoginWithKakao = () => {
+    Kakao.Auth.loginForm({
+      scope: "account_email profile_nickname",
+      success: function (auth) {
+        Kakao.Auth.setAccessToken(auth.access_token);
+        console.log(auth.access_token, "토큰");
+        Kakao.API.request({
+          url: "/v2/user/me",
+          success: function (response) {
+            console.log(response, "response");
+            storeState.login.user_id = response.kakao_account.email;
+            dispatch(onLoginWithKakao());
+            navigate("/");
+          },
+          fail: function (error) {
+            alert(
+              `카카로 로그인에 실패했습니다. 관리자에게 문의하세요.
+                  ${JSON.stringify(error)}`,
+            );
+          },
+        });
+      },
+      fail: function (error) {
+        console.log(error);
+      },
+    });
+  };
 
   return (
     <BaseContainer>
@@ -87,6 +126,16 @@ function Login() {
             placeholder={"아이디 또는 이메일"}
             onChange={(e) => setInputValueId(e.target.value)}
           />
+          {isNoneId ? (
+            <BaseSpan
+              className='danger'
+              display={"block"}
+              fontSize={"0.8rem"}
+              margin={"16px 20px 0"}
+            >
+              아이디 또는 이메일을 입력해주세요.
+            </BaseSpan>
+          ) : null}
         </BaseDiv>
         <BaseDiv width={"33%"} minWidth={"314px"} padding={"8px 0"}>
           <label htmlFor='userPassword' style={{ display: "none" }} />
@@ -98,6 +147,16 @@ function Login() {
             placeholder={"비밀번호"}
             onChange={(e) => setInputValuePassword(e.target.value)}
           />
+          {isNonePassword ? (
+            <BaseSpan
+              className='danger'
+              display={"block"}
+              fontSize={"0.8rem"}
+              margin={"16px 20px 0"}
+            >
+              비밀번호를 입력해주세요.
+            </BaseSpan>
+          ) : null}
         </BaseDiv>
         <BaseDiv width={"33%"} minWidth={"314px"} padding={"8px 0"}>
           <BaseButton
@@ -119,7 +178,7 @@ function Login() {
           padding={"8px 0"}
         >
           <hr style={{ width: "33%" }} />
-          <BaseSpan width={"34%"} textAlign={"center"}>
+          <BaseSpan width={"34%"} textAlign={"center"} pointerEventsNone>
             Social
           </BaseSpan>
           <hr style={{ width: "33%" }} />
@@ -135,14 +194,14 @@ function Login() {
           minWidth={"314px"}
           padding={"8px 0"}
         >
-          <ImageBoxDiv>
+          <ImageBoxDiv onClick={() => console.log("naver")}>
             <img
               src={naverIcon}
               alt='naver_icon'
               style={{ borderRadius: "5px" }}
             />
           </ImageBoxDiv>
-          <ImageBoxDiv>
+          <ImageBoxDiv onClick={() => onHandleLoginWithKakao()}>
             <img
               src={kakaoIcon}
               alt='kakao_icon'
@@ -151,6 +210,7 @@ function Login() {
           </ImageBoxDiv>
         </BaseDiv>
       </SocialLoginDiv>
+      <span>{storeState.login.user_id}</span>
     </BaseContainer>
   );
 }
