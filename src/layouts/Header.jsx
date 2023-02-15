@@ -136,6 +136,7 @@ const FaSunIcon = styled(FaSun)`
 
 function Header() {
   console.log("[Header]");
+
   const storeState = useSelector((state) => state);
   const dispatch = useDispatch();
 
@@ -157,6 +158,8 @@ function Header() {
     sideNav.classList.toggle("show"), blockLayer.classList.toggle("show");
   };
 
+  
+
   return (
     <StyledHeader>
       <Nav>
@@ -177,7 +180,7 @@ function Header() {
             </Link>
           </BaseDiv>
           <BaseDiv mobileDisplayNone>
-            <Link to='/quiz'>
+            <Link to='/notice'>
               <BaseSpan textShadow>Notice</BaseSpan>
             </Link>
           </BaseDiv>
@@ -271,7 +274,7 @@ function Header() {
               </BaseDiv>
             ) : (
               <BaseDiv>
-                <Link to='' onClick={() => dispatch(onLogin())}>
+                <Link to='/login' onClick={() => onHandleSideNav()}>
                   <BaseSpan textShadow>Login</BaseSpan>
                 </Link>
               </BaseDiv>
