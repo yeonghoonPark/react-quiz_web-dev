@@ -1,7 +1,10 @@
 import styled from "styled-components";
 
 const StyledSpan = styled.div`
+  display: ${(p) => p.display || {}};
   width: ${(p) => p.width || "100%"};
+  margin: ${(p) => p.margin || {}};
+  font-size: ${(p) => p.fontSize || {}};
   text-align: ${(p) => p.textAlign || {}};
   cursor: ${(p) => (p.pointer ? "pointer" : {})};
   pointer-events: ${(p) => (p.pointerEventsNone ? "none" : "auto")};
@@ -19,21 +22,29 @@ const StyledSpan = styled.div`
 `;
 
 function BaseSpan({
+  display,
   width,
+  margin,
+  fontSize,
   textAlign,
   pointer,
   pointerEventsNone,
   textShadow,
+  className,
   onClick,
   children,
 }) {
   return (
     <StyledSpan
+      display={display}
+      margin={margin}
+      fontSize={fontSize}
       width={width}
       textAlign={textAlign}
       pointer={pointer}
       pointerEventsNone={pointerEventsNone}
       textShadow={textShadow}
+      className={className}
       onClick={onClick}
     >
       {children}
