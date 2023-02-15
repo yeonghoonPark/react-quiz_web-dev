@@ -16,7 +16,10 @@
   --color-gray-700: #495057;
   --color-gray-800: #343a40;
   --color-gray-900: #212529;
-  --color-fink: #f07474;
+  --color-red: #dc3545;
+  --color-pink: #d63384;
+  --color-orange: #e06c75;
+  --color-peach: #f07474;
   --color-blue: #0d6efd;
   --color-light-blue: #b4c1ee;
   --color-light-green: #87fca4;
@@ -42,6 +45,10 @@ body[data-theme="light"] {
   );
 }
 
+body[data-theme="light"] .danger {
+  color: var(--color-red);
+}
+
 body[data-theme="dark"] {
   color: var(--color-gray-100);
   background: linear-gradient(
@@ -49,6 +56,10 @@ body[data-theme="dark"] {
     var(--color-black) 50%,
     var(--color-gray-900)
   );
+}
+
+body[data-theme="dark"] .danger {
+  color: var(--color-orange);
 }
 
 body[data-theme="dark"] input {
