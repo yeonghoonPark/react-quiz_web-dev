@@ -22,7 +22,7 @@ export const onLoginWithKakao = () => ({
 const login = (state = currentState, action) => {
   switch (action.type) {
     case ON_LOGIN:
-      return { ...state, user_id: state.user_id };
+      return { ...state };
     case ON_LOGOUT:
       return {
         ...state,
@@ -30,7 +30,7 @@ const login = (state = currentState, action) => {
         user_password: (state.user_password = null),
       };
     case ON_LOGIN_WITH_KAKAO:
-      return { ...state, user_id: state.user_id };
+      return { ...state };
     default:
       return state;
   }
