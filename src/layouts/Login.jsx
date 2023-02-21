@@ -4,7 +4,7 @@ import BaseDiv from "../components/base/BaseDiv";
 import BaseInput from "../components/base/BaseInput";
 import BaseButton from "../components/base/BaseButton";
 import BaseSpan from "../components/base/BaseSpan";
-import iconNaver from "../../public/assets/images/icon_naver.png";
+// import iconNaver from "../../public/assets/images/icon_naver.png";
 import iconKakao from "../../public/assets/images/icon_kakao.png";
 import { useRef, useLayoutEffect, useState, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,6 +12,9 @@ import { onLogin, onLoginWithKakao } from "../reducers/login";
 import { useNavigate } from "react-router-dom";
 
 import iconGoogle from "../../public/assets/images/icon_google.png";
+
+import GoogleLogin from "react-google-login";
+import { gapi } from "gapi-script";
 
 const TitleH1 = styled.h1`
   margin-bottom: 1.5rem;
@@ -41,45 +44,46 @@ const ImageBoxDiv = styled.div`
   cursor: pointer;
 `;
 
-// R8QiGDSVueMO56TC5PVt
-// http://127.0.0.1:5173
+function GoogleTestBtn() {
+  //   useEffect(() => {
+  //     function start() {
+  //       gapi.client.init({
+  //         clientId,
+  //         scope: "email",
+  //       });
+  //     }
 
-// function NaverTest() {
-//   const onLoginWithNaver = () => {
-//     const naver_id_login = new window.naver_id_login(
-//       "R8QiGDSVueMO56TC5PVt",
-//       "http://127.0.0.1:5173",
-//     );
-//     const state = naver_id_login.getUniqState();
-//     // naver_id_login.setButton("white", 40, 48.7);
-//     naver_id_login.setDomain("http://127.0.0.1:5173");
-//     naver_id_login.setState(state);
-//     naver_id_login.setPopup();
-//     naver_id_login.init_naver_id_login();
-//   };
+  //     gapi.load("client:auth2", start);
+  //   });
 
-//   useEffect(() => {
-//     onLoginWithNaver();
-//   }, []);
-// }
+  //   const onSuccess = async (res) => {
+  //     console.log(res);
+  //     console.log(res.wt.cu, "이메일");
+  //   };
+  //   const onFailure = (err) => {
+  //     console.log(err);
+  //   };
 
-const naverTest = () => {
-  const naver_id_login = new window.naver_id_login(
-    "R8QiGDSVueMO56TC5PVt",
-    "http://127.0.0.1:5173/login",
+  return (
+    <GoogleLogin
+      clientId={clientId}
+      responseType={"id_token"}
+      onSuccess={onSuccess}
+      onFailure={onFailure}
+      render={(renderProps) => (
+        <ImageBoxDiv>
+          <img
+            onClick={renderProps.onClick}
+            title='구글 아이디로 로그인'
+            src={iconGoogle}
+            alt='google_icon'
+            style={{ border: "1px solid #4285F4", borderRadius: "5px" }}
+          />
+        </ImageBoxDiv>
+      )}
+    />
   );
-  // 접근 토큰 값 출력
-  alert(naver_id_login.oauthParams.access_token);
-  // 네이버 사용자 프로필 조회
-  naver_id_login.get_naver_userprofile(naverSignInCallback());
-
-  function naverSignInCallback() {
-    console.log(naver_id_login.getProfileData());
-    alert(naver_id_login.getProfileData("email"));
-    alert(naver_id_login.getProfileData("nickname"));
-    alert(naver_id_login.getProfileData("age"));
-  }
-};
+}
 
 function Login() {
   console.log("[Login]");
@@ -98,6 +102,8 @@ function Login() {
   const [isNonePassword, setIsNonePassword] = useState(false);
 
   const navigate = useNavigate();
+
+  const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
   // function's
   useLayoutEffect(() => {
@@ -123,49 +129,61 @@ function Login() {
 
   const onHandleLoginWithKakao = () => {
     Kakao.Auth.loginForm({
-      scope: "account_email profile_nickname",
       success: function (auth) {
         Kakao.Auth.setAccessToken(auth.access_token);
         Kakao.API.request({
           url: "/v2/user/me",
-          success: function (response) {
-            console.log(response, "response");
-            storeState.login.user_id = response.kakao_account.email;
+          success: function (res) {
+            console.log(res, "response");
+            storeState.login.user_id = res.kakao_account.email;
             dispatch(onLoginWithKakao());
             navigate("/");
           },
-          fail: function (error) {
+          fail: function (err) {
             alert(
               `카카로 로그인에 실패했습니다. 관리자에게 문의하세요.
-                  ${JSON.stringify(error)}`,
+                  ${JSON.stringify(err)}`,
             );
           },
         });
       },
-      fail: function (error) {
-        console.log(error);
+      fail: function (err) {
+        console.log(err);
       },
     });
   };
 
-  const onLoginWithNaver = () => {
-    const naver_id_login = new window.naver_id_login(
-      "R8QiGDSVueMO56TC5PVt",
-      "http://127.0.0.1:5173",
-    );
-    const state = naver_id_login.getUniqState();
-    naver_id_login.setButton("green", 1, 48.71);
-    naver_id_login.setDomain("http://127.0.0.1:5173");
-    naver_id_login.setState(state);
-    // naver_id_login.setPopup();
-    naver_id_login.init_naver_id_login();
+  // const onLoginWithNaver = () => {
+  //   const naver_id_login = new window.naver_id_login(
+  //     "R8QiGDSVueMO56TC5PVt",
+  //     "http://127.0.0.1:5173",
+  //   );
+  //   const state = naver_id_login.getUniqState();
+  //   naver_id_login.setButton("green", 1, 48.71);
+  //   naver_id_login.setDomain("http://127.0.0.1:5173");
+  //   naver_id_login.setState(state);
+  //   // naver_id_login.setPopup();
+  //   naver_id_login.init_naver_id_login();
 
-    // navigate("/");
+  //   // navigate("/");
+  // };
+
+  // useEffect(() => {
+  //   onLoginWithNaver();
+  // }, []);
+
+  const googleLoginTest = {
+    googleLoginTestSuccess: function (res) {
+      console.log(res);
+      console.log(res.wt.cu, "이메일");
+      storeState.login.user_id = res.wt.cu;
+      dispatch(onLogin());
+      navigate("/");
+    },
+    googleLoginTestFailure: function (err) {
+      console.log(err);
+    },
   };
-
-  useEffect(() => {
-    onLoginWithNaver();
-  }, []);
 
   return (
     <BaseContainer>
@@ -250,13 +268,13 @@ function Login() {
           minWidth={"314px"}
           padding={"8px 0"}
         >
-          <ImageBoxDiv id='naver_id_login'>
-            {/* <img
+          {/* <ImageBoxDiv id='naver_id_login'>
+            <img
               src={iconNaver}
               alt='naver_icon'
               style={{ borderRadius: "5px" }}
-            /> */}
-          </ImageBoxDiv>
+            />
+          </ImageBoxDiv> */}
           <ImageBoxDiv onClick={() => onHandleLoginWithKakao()}>
             <img
               title='카카오 아이디로 로그인'
@@ -265,14 +283,25 @@ function Login() {
               style={{ borderRadius: "5px" }}
             />
           </ImageBoxDiv>
-          <ImageBoxDiv onClick={() => onHandleLoginWithKakao()}>
-            <img
-              title='구글 아이디로 로그인'
-              src={iconGoogle}
-              alt='google_icon'
-              style={{ border: "1px solid #4285F4", borderRadius: "5px" }}
+
+          <ImageBoxDiv>
+            <GoogleLogin
+              clientId={GOOGLE_CLIENT_ID}
+              responseType={"id_token"}
+              onSuccess={(res) => googleLoginTest.googleLoginTestSuccess(res)}
+              onFailure={(err) => googleLoginTest.googleLoginTestFailure(err)}
+              render={(renderProps) => (
+                <img
+                  onClick={renderProps.onClick}
+                  title='구글 아이디로 로그인'
+                  src={iconGoogle}
+                  alt='google_icon'
+                  style={{ border: "1px solid #4285F4", borderRadius: "5px" }}
+                />
+              )}
             />
           </ImageBoxDiv>
+          {/* <GoogleTestBtn /> */}
         </BaseDiv>
       </SocialLoginDiv>
     </BaseContainer>

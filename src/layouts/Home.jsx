@@ -12,33 +12,6 @@ function Home() {
   const storeState = useSelector((state) => state);
   const dispatch = useDispatch();
 
-  const naverTest = () => {
-    var naver_id_login = new window.naver_id_login(
-      "R8QiGDSVueMO56TC5PVt",
-      "http://127.0.0.1:5173",
-    );
-
-    naver_id_login.response_type = "code";
-    console.log(naver_id_login, "네이버_아이디_로그인");
-    // 접근 토근 값 출력
-    console.log(naver_id_login.oauthParams.access_token, "@토큰");
-
-    // 네이버 사용자 프로필 조회
-    naver_id_login.get_naver_userprofile(naverSignInCallback());
-
-    function naverSignInCallback() {
-      console.log(naver_id_login.getProfileData("email"));
-      storeState.login.user_id = naver_id_login.getProfileData("email");
-      console.log(naver_id_login.getProfileData("nickname"));
-      console.log(naver_id_login.getProfileData("age"));
-      console.log(storeState.login);
-    }
-  };
-
-  useEffect(() => {
-    naverTest();
-  });
-
   return (
     <div style={{ marginTop: "66px" }}>
       <h1>HomePage Test</h1>
