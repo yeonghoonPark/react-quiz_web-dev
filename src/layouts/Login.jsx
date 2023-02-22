@@ -4,17 +4,14 @@ import BaseDiv from "../components/base/BaseDiv";
 import BaseInput from "../components/base/BaseInput";
 import BaseButton from "../components/base/BaseButton";
 import BaseSpan from "../components/base/BaseSpan";
-// import iconNaver from "../../public/assets/images/icon_naver.png";
 import iconKakao from "../../public/assets/images/icon_kakao.png";
-import { useRef, useLayoutEffect, useState, useEffect, useMemo } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { onLogin, onLoginWithKakao } from "../reducers/login";
-import { useNavigate } from "react-router-dom";
-
 import iconGoogle from "../../public/assets/images/icon_google.png";
-
 import GoogleLogin from "react-google-login";
 import { gapi } from "gapi-script";
+import { useRef, useLayoutEffect, useState, useEffect, useMemo } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { onLogin } from "../reducers/login";
+import { useNavigate } from "react-router-dom";
 
 const TitleH1 = styled.h1`
   margin-bottom: 1.5rem;
@@ -29,13 +26,19 @@ const LoginForm = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 4rem;
+  padding-bottom: 4rem;
+  @media all and (max-width: 29.9375rem) {
+    padding-bottom: 2rem;
+  }
 `;
 
 const SocialLoginDiv = styled.div`
   display: flex;
   justify-content: center;
-  margin-bottom: 4rem;
+  padding-bottom: 4rem;
+  @media all and (max-width: 29.9375rem) {
+    padding-bottom: 2rem;
+  }
 `;
 
 const ImageBoxDiv = styled.div`
@@ -43,47 +46,6 @@ const ImageBoxDiv = styled.div`
   height: 48px;
   cursor: pointer;
 `;
-
-function GoogleTestBtn() {
-  //   useEffect(() => {
-  //     function start() {
-  //       gapi.client.init({
-  //         clientId,
-  //         scope: "email",
-  //       });
-  //     }
-
-  //     gapi.load("client:auth2", start);
-  //   });
-
-  //   const onSuccess = async (res) => {
-  //     console.log(res);
-  //     console.log(res.wt.cu, "이메일");
-  //   };
-  //   const onFailure = (err) => {
-  //     console.log(err);
-  //   };
-
-  return (
-    <GoogleLogin
-      clientId={clientId}
-      responseType={"id_token"}
-      onSuccess={onSuccess}
-      onFailure={onFailure}
-      render={(renderProps) => (
-        <ImageBoxDiv>
-          <img
-            onClick={renderProps.onClick}
-            title='구글 아이디로 로그인'
-            src={iconGoogle}
-            alt='google_icon'
-            style={{ border: "1px solid #4285F4", borderRadius: "5px" }}
-          />
-        </ImageBoxDiv>
-      )}
-    />
-  );
-}
 
 function Login() {
   console.log("[Login]");
@@ -106,10 +68,6 @@ function Login() {
   const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
   // function's
-  useLayoutEffect(() => {
-    inputRefId.current.focus();
-  }, []);
-
   const onHandleLogin = (e) => {
     console.log("[onHandleLogin]");
     e.preventDefault();
@@ -136,7 +94,7 @@ function Login() {
           success: function (res) {
             console.log(res, "response");
             storeState.login.user_id = res.kakao_account.email;
-            dispatch(onLoginWithKakao());
+            dispatch(onLogin());
             navigate("/");
           },
           fail: function (err) {
@@ -153,25 +111,6 @@ function Login() {
     });
   };
 
-  // const onLoginWithNaver = () => {
-  //   const naver_id_login = new window.naver_id_login(
-  //     "R8QiGDSVueMO56TC5PVt",
-  //     "http://127.0.0.1:5173",
-  //   );
-  //   const state = naver_id_login.getUniqState();
-  //   naver_id_login.setButton("green", 1, 48.71);
-  //   naver_id_login.setDomain("http://127.0.0.1:5173");
-  //   naver_id_login.setState(state);
-  //   // naver_id_login.setPopup();
-  //   naver_id_login.init_naver_id_login();
-
-  //   // navigate("/");
-  // };
-
-  // useEffect(() => {
-  //   onLoginWithNaver();
-  // }, []);
-
   const googleLoginTest = {
     googleLoginTestSuccess: function (res) {
       console.log(res);
@@ -184,6 +123,10 @@ function Login() {
       console.log(err);
     },
   };
+
+  useLayoutEffect(() => {
+    inputRefId.current.focus();
+  }, []);
 
   return (
     <BaseContainer>
@@ -268,13 +211,6 @@ function Login() {
           minWidth={"314px"}
           padding={"8px 0"}
         >
-          {/* <ImageBoxDiv id='naver_id_login'>
-            <img
-              src={iconNaver}
-              alt='naver_icon'
-              style={{ borderRadius: "5px" }}
-            />
-          </ImageBoxDiv> */}
           <ImageBoxDiv onClick={() => onHandleLoginWithKakao()}>
             <img
               title='카카오 아이디로 로그인'
@@ -301,7 +237,6 @@ function Login() {
               )}
             />
           </ImageBoxDiv>
-          {/* <GoogleTestBtn /> */}
         </BaseDiv>
       </SocialLoginDiv>
     </BaseContainer>
