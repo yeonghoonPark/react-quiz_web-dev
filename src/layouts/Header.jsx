@@ -158,8 +158,6 @@ function Header() {
     sideNav.classList.toggle("show"), blockLayer.classList.toggle("show");
   };
 
-  
-
   return (
     <StyledHeader>
       <Nav>
