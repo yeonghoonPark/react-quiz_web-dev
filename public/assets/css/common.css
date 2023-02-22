@@ -32,10 +32,6 @@
   --transition-500: 0.5s;
 }
 
-body {
-  height: calc(100vh - 66px);
-}
-
 body[data-theme="light"] {
   color: var(--color-black);
   background: linear-gradient(
@@ -43,6 +39,7 @@ body[data-theme="light"] {
     var(--color-white) 50%,
     var(--color-gray-300)
   );
+  background-attachment: fixed;
 }
 
 body[data-theme="light"] .danger {
@@ -56,6 +53,7 @@ body[data-theme="dark"] {
     var(--color-black) 50%,
     var(--color-gray-900)
   );
+  background-attachment: fixed;
 }
 
 body[data-theme="dark"] .danger {
