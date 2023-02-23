@@ -5,7 +5,6 @@ const currentState = {
 
 const ON_LOGIN = "LOGIN/ON_LOGIN";
 const ON_LOGOUT = "LOGIN/ON_LOGOUT";
-const ON_LOGIN_WITH_KAKAO = "LOGIN/ON_LOGIN_WITH_KAKAO";
 
 export const onLogin = () => ({
   type: ON_LOGIN,
@@ -13,10 +12,6 @@ export const onLogin = () => ({
 
 export const onLogout = () => ({
   type: ON_LOGOUT,
-});
-
-export const onLoginWithKakao = () => ({
-  type: ON_LOGIN_WITH_KAKAO,
 });
 
 const login = (state = currentState, action) => {
@@ -29,8 +24,6 @@ const login = (state = currentState, action) => {
         user_id: (state.user_id = null),
         user_password: (state.user_password = null),
       };
-    case ON_LOGIN_WITH_KAKAO:
-      return { ...state };
     default:
       return state;
   }
