@@ -21,6 +21,7 @@
   --color-orange: #e06c75;
   --color-peach: #f07474;
   --color-blue: #0d6efd;
+  --color-sky: #5dbdfd;
   --color-light-blue: #b4c1ee;
   --color-light-green: #87fca4;
 
@@ -46,6 +47,10 @@ body[data-theme="light"] .danger {
   color: var(--color-red);
 }
 
+body[data-theme="light"] .primary {
+  color: var(--color-blue);
+}
+
 body[data-theme="dark"] {
   color: var(--color-gray-100);
   background: linear-gradient(
@@ -58,6 +63,10 @@ body[data-theme="dark"] {
 
 body[data-theme="dark"] .danger {
   color: var(--color-orange);
+}
+
+body[data-theme="dark"] .primary {
+  color: var(--color-sky);
 }
 
 body[data-theme="dark"] input {
