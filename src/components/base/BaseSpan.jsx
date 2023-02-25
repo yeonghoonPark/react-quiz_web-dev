@@ -1,10 +1,10 @@
 import styled from "styled-components";
 
-const StyledSpan = styled.div`
+const StyledSpan = styled.span`
   display: ${(p) => p.display || {}};
   width: ${(p) => p.width || "100%"};
   margin: ${(p) => p.margin || {}};
-  font-size: ${(p) => p.fontSize || {}};
+  font-size: ${(p) => p.fontSize || "inherit"};
   text-align: ${(p) => p.textAlign || {}};
   cursor: ${(p) => (p.pointer ? "pointer" : {})};
   pointer-events: ${(p) => (p.pointerEventsNone ? "none" : "auto")};
