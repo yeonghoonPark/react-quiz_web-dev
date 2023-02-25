@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 const StyledButton = styled.button`
   width: ${(p) => p.width || {}};
+  min-width: ${(p) => p.minWidth || {}};
   margin: ${(p) => p.margin || {}};
   margin-left: ${(p) => p.marginLeft || {}};
   margin-top: ${(p) => p.marginTop || {}};
@@ -29,6 +30,7 @@ const StyledButton = styled.button`
 
 function BaseButton({
   width,
+  minWidth,
   margin,
   marginLeft,
   marginTop,
@@ -40,11 +42,12 @@ function BaseButton({
   hoverBackgroundColor,
   fontSize,
   onClick,
-  message,
+  children,
 }) {
   return (
     <StyledButton
       width={width}
+      minWidth={minWidth}
       margin={margin}
       marginLeft={marginLeft}
       marginTop={marginTop}
@@ -57,7 +60,7 @@ function BaseButton({
       fontSize={fontSize}
       onClick={onClick}
     >
-      {message}
+      {children}
     </StyledButton>
   );
 }
