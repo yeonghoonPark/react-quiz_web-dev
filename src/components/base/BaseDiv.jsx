@@ -14,6 +14,9 @@ const StyledDiv = styled.div`
   transition: ${(p) => p.transition || {}};
   @media all and (max-width: 47.9375rem) {
     display: ${(p) => (p.mobileDisplayNone ? "none" : {})};
+    flex-direction: ${(p) => p.mobileFlexDirection || {}};
+    justify-content: ${(p) => p.mobileJustifyContent || {}};
+    align-items: ${(p) => p.mobileAlignItems || {}};
   }
 
   @media all and (max-width: 29.9375rem) {
@@ -32,6 +35,9 @@ function BaseDiv({
   boxShadow,
   transition,
   mobileDisplayNone,
+  mobileFlexDirection,
+  mobileJustifyContent,
+  mobileAlignItems,
   children,
 }) {
   return (
@@ -47,6 +53,9 @@ function BaseDiv({
       boxShadow={boxShadow}
       transition={transition}
       mobileDisplayNone={mobileDisplayNone}
+      mobileFlexDirection={mobileFlexDirection}
+      mobileJustifyContent={mobileJustifyContent}
+      mobileAlignItems={mobileAlignItems}
     >
       {children}
     </StyledDiv>
