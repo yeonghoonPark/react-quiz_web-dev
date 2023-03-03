@@ -20,6 +20,10 @@ const TitleH1 = styled.h1`
   font-weight: 700;
   text-align: center;
   pointer-events: none;
+  @media all and (max-width: 29.9375rem) {
+    padding: 1.5rem 0;
+    font-size: 1.5rem;
+  }
 `;
 
 const LoginForm = styled.form`
@@ -36,6 +40,7 @@ const SocialLoginDiv = styled.div`
   display: flex;
   justify-content: center;
   padding-bottom: 4rem;
+
   @media all and (max-width: 29.9375rem) {
     padding-bottom: 2rem;
   }
@@ -177,15 +182,16 @@ function Login() {
         </BaseDiv>
         <BaseDiv width={"33%"} minWidth={"314px"} padding={"8px 0"}>
           <BaseButton
-            message={"Login"}
             width={"100%"}
             padding={"14px 18px"}
             onClick={(e) => onHandleLogin(e)}
-          />
+          >
+            Login
+          </BaseButton>
         </BaseDiv>
       </LoginForm>
 
-      <SocialLoginDiv>
+      <SocialLoginDiv className='social-login-header'>
         <BaseDiv
           display={"flex"}
           justifyContent={"space-between"}
@@ -202,7 +208,7 @@ function Login() {
         </BaseDiv>
       </SocialLoginDiv>
 
-      <SocialLoginDiv>
+      <SocialLoginDiv className='social-login-body'>
         <BaseDiv
           display={"flex"}
           justifyContent={"space-evenly"}
