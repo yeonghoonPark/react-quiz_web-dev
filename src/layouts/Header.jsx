@@ -27,6 +27,8 @@ const LogoDiv = styled.div`
   &:hover {
     transform: rotate(17deg);
   }
+  @media all and (max-width: 47.9375rem) {
+    margin-right: 0;
 `;
 
 const Nav = styled.nav`
