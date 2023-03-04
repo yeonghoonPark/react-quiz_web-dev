@@ -21,8 +21,9 @@
   --color-orange: #e06c75;
   --color-peach: #f07474;
   --color-blue: #0d6efd;
+  --color-light-blue: #eff0ff;
+  --color-dark-blue: #1b1b1f;
   --color-sky: #5dbdfd;
-  --color-light-blue: #b4c1ee;
   --color-light-green: #87fca4;
 
   --color-hover-blue: #0b5ed7;
@@ -31,6 +32,12 @@
 
   --transition-300: 0.3s;
   --transition-500: 0.5s;
+
+  --radius-standard: 5px;
+}
+
+header {
+  color: var(--color-black);
 }
 
 body[data-theme="light"] {
@@ -69,10 +76,14 @@ body[data-theme="dark"] .primary {
   color: var(--color-sky);
 }
 
-body[data-theme="dark"] input {
+body[data-theme="dark"] .black {
   color: var(--color-black);
 }
 
-header {
-  color: var(--color-black);
+body[data-theme="dark"] .bg-dark-blue {
+  background-color: var(--color-dark-blue);
+}
+
+body[data-theme="dark"] .multiple-choice:hover {
+  background-color: var(--color-dark-blue);
 }
