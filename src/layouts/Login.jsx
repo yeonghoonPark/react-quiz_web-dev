@@ -141,6 +141,7 @@ function Login() {
         <BaseDiv width={"33%"} minWidth={"314px"} padding={"8px 0"}>
           <label htmlFor='userId' style={{ display: "none" }} />
           <BaseInput
+            className='black'
             inputRef={inputRefId}
             type={"text"}
             value={inputValueId}
@@ -162,6 +163,7 @@ function Login() {
         <BaseDiv width={"33%"} minWidth={"314px"} padding={"8px 0"}>
           <label htmlFor='userPassword' style={{ display: "none" }} />
           <BaseInput
+            className='black'
             inputRef={inputRefPassword}
             type={"password"}
             value={inputValuePassword}
