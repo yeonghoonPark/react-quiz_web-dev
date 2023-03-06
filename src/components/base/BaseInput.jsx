@@ -23,6 +23,7 @@ const StyledInput = styled.input`
 `;
 
 function BaseInput({
+  className,
   inputRef,
   type,
   value,
@@ -33,6 +34,7 @@ function BaseInput({
 }) {
   return (
     <StyledInput
+      className={className}
       ref={inputRef}
       type={type}
       value={value}
