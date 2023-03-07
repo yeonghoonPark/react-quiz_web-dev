@@ -3,9 +3,10 @@ import BaseContainer from "../components/base/BaseContainer";
 import BaseButton from "../components/base/BaseButton";
 import BaseSpan from "../components/base/BaseSpan";
 import BaseDiv from "../components/base/BaseDiv";
-import { Link } from "react-router-dom";
-
 import { FaClock, FaCheckCircle } from "react-icons/fa";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import quiz from "../data/quiz.json";
 
 const TitleH1 = styled.h1`
   margin-bottom: 1.5rem;
@@ -54,8 +55,49 @@ const QuizMultipleChoiceP = styled.p`
 `;
 
 function Quiz() {
+  const [quizzes, setQuizzes] = useState([]);
+
+  const mixArrayRandomly = (array) => {
+    console.log("[mixArrayRandomly]");
+    return array.sort(() => Math.random() - 0.5);
+  };
+
+  useEffect(() => {
+    setQuizzes(mixArrayRandomly(quiz.data));
+  }, []);
+
+  const createHTMLString = () => {
+    const result = [];
+    for (let index = 0; index < 10; index++) {
+      result.push(
+        <BaseDiv padding={"0"} key={index}>
+          <QuizTitleH2 className='bg-dark-blue'>
+            {index + 1}.{quizzes[index]?.question}
+          </QuizTitleH2>
+          <QuizMultipleChoiceP>
+            <BaseSpan className='multiple-choice' pointer>
+              ① {quizzes[index]?.multiple_choice_view1}
+            </BaseSpan>
+          </QuizMultipleChoiceP>
+          <QuizMultipleChoiceP>
+            <BaseSpan className='multiple-choice' pointer>
+              ② {quizzes[index]?.multiple_choice_view2}
+            </BaseSpan>
+          </QuizMultipleChoiceP>
+          <QuizMultipleChoiceP>
+            <BaseSpan className='multiple-choice' pointer>
+              ③ {quizzes[index]?.multiple_choice_view3}
+            </BaseSpan>
+          </QuizMultipleChoiceP>
+        </BaseDiv>,
+      );
+    }
+    return result;
+  };
+
   return (
     <BaseContainer>
+      <button onClick={() => console.log(quizzes)}>버튼</button>
       <TitleH1>Quiz</TitleH1>
       <QuizContainer>
         <BaseDiv
@@ -91,28 +133,32 @@ function Quiz() {
           </BaseSpan>
         </BaseDiv>
 
-        <BaseDiv padding={"0"}>
-          <QuizTitleH2 className='bg-dark-blue'>
-            1. 스프레이 방식으로 만들어진 페인트의 경우 스프레이통 안에서 구슬이
-            들어 있어 흔들면 소리가 납니다, 스프레이 통 안에 구슬을 넣는 이유는
-            무엇일까요?
-          </QuizTitleH2>
-          <QuizMultipleChoiceP>
-            <BaseSpan className='multiple-choice' pointer>
-              ① 잘 섞이라고
-            </BaseSpan>
-          </QuizMultipleChoiceP>
-          <QuizMultipleChoiceP>
-            <BaseSpan className='multiple-choice' pointer>
-              ② 심심해서
-            </BaseSpan>
-          </QuizMultipleChoiceP>
-          <QuizMultipleChoiceP>
-            <BaseSpan className='multiple-choice' pointer>
-              ③ 안흔들면 서운해서
-            </BaseSpan>
-          </QuizMultipleChoiceP>
-        </BaseDiv>
+        {/* {quizzes.map((quiz, index) => {
+          return (
+            <BaseDiv padding={"0"} key={index}>
+              <QuizTitleH2 className='bg-dark-blue'>
+                {index + 1}.{quiz.question}
+              </QuizTitleH2>
+              <QuizMultipleChoiceP>
+                <BaseSpan className='multiple-choice' pointer>
+                  ① {quiz.multiple_choice_view1}
+                </BaseSpan>
+              </QuizMultipleChoiceP>
+              <QuizMultipleChoiceP>
+                <BaseSpan className='multiple-choice' pointer>
+                  ② {quiz.multiple_choice_view2}
+                </BaseSpan>
+              </QuizMultipleChoiceP>
+              <QuizMultipleChoiceP>
+                <BaseSpan className='multiple-choice' pointer>
+                  ③ {quiz.multiple_choice_view3}
+                </BaseSpan>
+              </QuizMultipleChoiceP>
+            </BaseDiv>
+          );
+        })} */}
+
+        {createHTMLString()}
       </QuizContainer>
     </BaseContainer>
   );
