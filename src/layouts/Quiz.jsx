@@ -56,6 +56,7 @@ const QuizMultipleChoiceP = styled.p`
 
 function Quiz() {
   const [quizzes, setQuizzes] = useState([]);
+  const CLASSNAME_HIDDEN = "hidden";
 
   const mixArrayRandomly = (array) => {
     console.log("[mixArrayRandomly]");
@@ -70,29 +71,61 @@ function Quiz() {
     const result = [];
     for (let index = 0; index < 10; index++) {
       result.push(
-        <BaseDiv padding={"0"} key={index}>
+        <BaseDiv className='quiz-box' padding={"0"} key={index}>
           <QuizTitleH2 className='bg-dark-blue'>
             {index + 1}.{quizzes[index]?.question}
           </QuizTitleH2>
           <QuizMultipleChoiceP>
-            <BaseSpan className='multiple-choice' pointer>
+            <BaseSpan
+              className='multiple-choice'
+              pointer
+              onClick={removeElement}
+            >
               ① {quizzes[index]?.multiple_choice_view1}
             </BaseSpan>
           </QuizMultipleChoiceP>
           <QuizMultipleChoiceP>
-            <BaseSpan className='multiple-choice' pointer>
+            <BaseSpan
+              className='multiple-choice'
+              pointer
+              onClick={removeElement}
+            >
               ② {quizzes[index]?.multiple_choice_view2}
             </BaseSpan>
           </QuizMultipleChoiceP>
           <QuizMultipleChoiceP>
-            <BaseSpan className='multiple-choice' pointer>
+            <BaseSpan
+              className='multiple-choice'
+              pointer
+              onClick={removeElement}
+            >
               ③ {quizzes[index]?.multiple_choice_view3}
             </BaseSpan>
           </QuizMultipleChoiceP>
         </BaseDiv>,
       );
+      displayItems();
     }
     return result;
+  };
+
+  const displayItems = () => {
+    const quizBoxes = document.querySelectorAll(".quiz-box");
+
+    quizBoxes.forEach((quizBox, index) =>
+      index !== 0 ? quizBox.classList.add(CLASSNAME_HIDDEN) : null,
+    );
+  };
+
+  const removeElement = (e) => {
+    const currentQuizBox = e.target.parentNode.parentNode;
+    const nextQuizBox = currentQuizBox.nextSibling;
+
+    nextQuizBox
+      ? nextQuizBox.classList.remove(CLASSNAME_HIDDEN)
+      : console.log("no one here");
+
+    currentQuizBox.remove();
   };
 
   return (
