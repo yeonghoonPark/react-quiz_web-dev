@@ -8,6 +8,9 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import quiz from "../data/quiz.json";
 
+import { useDispatch, useSelector } from "react-redux";
+import { increaseCorrectNumber } from "../reducers/record";
+
 const TitleH1 = styled.h1`
   margin-bottom: 1.5rem;
   padding: 2.5rem 0;
@@ -55,8 +58,14 @@ const QuizMultipleChoiceP = styled.p`
 `;
 
 function Quiz() {
+  console.log("[Quiz]");
+
   const [quizzes, setQuizzes] = useState([]);
   const CLASSNAME_HIDDEN = "hidden";
+
+  const storeState = useSelector((state) => state);
+  const correctNumber = storeState.record.correct_number;
+  const dispatch = useDispatch();
 
   const mixArrayRandomly = (array) => {
     console.log("[mixArrayRandomly]");
@@ -79,7 +88,13 @@ function Quiz() {
             <BaseSpan
               className='multiple-choice'
               pointer
-              onClick={removeElement}
+              onClick={(e) => {
+                countCorrectAnswers(
+                  quizzes[index]?.multiple_choice_view1,
+                  quizzes[index]?.correct,
+                );
+                removeElement(e);
+              }}
             >
               ① {quizzes[index]?.multiple_choice_view1}
             </BaseSpan>
@@ -88,7 +103,13 @@ function Quiz() {
             <BaseSpan
               className='multiple-choice'
               pointer
-              onClick={removeElement}
+              onClick={(e) => {
+                countCorrectAnswers(
+                  quizzes[index]?.multiple_choice_view2,
+                  quizzes[index]?.correct,
+                );
+                removeElement(e);
+              }}
             >
               ② {quizzes[index]?.multiple_choice_view2}
             </BaseSpan>
@@ -97,7 +118,13 @@ function Quiz() {
             <BaseSpan
               className='multiple-choice'
               pointer
-              onClick={removeElement}
+              onClick={(e) => {
+                countCorrectAnswers(
+                  quizzes[index]?.multiple_choice_view3,
+                  quizzes[index]?.correct,
+                );
+                removeElement(e);
+              }}
             >
               ③ {quizzes[index]?.multiple_choice_view3}
             </BaseSpan>
@@ -118,6 +145,7 @@ function Quiz() {
   };
 
   const removeElement = (e) => {
+    // console.log("[removeElement]");
     const currentQuizBox = e.target.parentNode.parentNode;
     const nextQuizBox = currentQuizBox.nextSibling;
 
@@ -128,9 +156,25 @@ function Quiz() {
     currentQuizBox.remove();
   };
 
+  const countCorrectAnswers = (clickedItem, correct) => {
+    if (clickedItem === correct) {
+      console.log("정답");
+      dispatch(increaseCorrectNumber());
+    } else {
+      console.log("오답");
+    }
+  };
+
   return (
     <BaseContainer>
-      <button onClick={() => console.log(quizzes)}>버튼</button>
+      <button
+        onClick={() => {
+          dispatch(increaseCorrectNumber());
+        }}
+      >
+        버튼
+      </button>
+      <span>{correctNumber}</span>
       <TitleH1>Quiz</TitleH1>
       <QuizContainer>
         <BaseDiv
@@ -150,7 +194,7 @@ function Quiz() {
           >
             <FaCheckCircleIcon /> 맞춘 갯수:{" "}
             <BaseSpan className={"danger"} pointerEventsNone>
-              1
+              {correctNumber}
             </BaseSpan>
           </BaseSpan>
           <BaseSpan
