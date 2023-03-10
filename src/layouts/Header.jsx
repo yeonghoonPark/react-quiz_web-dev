@@ -139,7 +139,7 @@ const FaSunIcon = styled(FaSun)`
 function Header() {
   console.log("[Header]");
 
-  const storeState = useSelector((state) => state);
+  const userId = useSelector((state) => state.login.user_id);
   const dispatch = useDispatch();
 
   const [theme, setTheme] = useState("light");
@@ -184,7 +184,7 @@ function Header() {
               <BaseSpan textShadow>Notice</BaseSpan>
             </Link>
           </BaseDiv>
-          {storeState.login.user_id ? (
+          {userId ? (
             <BaseDiv mobileDisplayNone>
               <Link to='/notice/write'>
                 <BaseSpan textShadow>Write</BaseSpan>
@@ -198,7 +198,7 @@ function Header() {
           </BaseDiv>
         </MenuLeftDiv>
         <MenuRightDiv>
-          {storeState.login.user_id ? (
+          {userId ? (
             <BaseDiv mobileDisplayNone>
               <Link to='' onClick={() => dispatch(onLogout())}>
                 <BaseSpan textShadow>Logout</BaseSpan>
@@ -251,7 +251,7 @@ function Header() {
                 <BaseSpan textShadow>Notice</BaseSpan>
               </Link>
             </BaseDiv>
-            {storeState.login.user_id ? (
+            {userId ? (
               <BaseDiv margin={"12px auto"}>
                 <Link to='/notice/write' onClick={() => onHandleSideNav()}>
                   <BaseSpan textShadow>Write</BaseSpan>
@@ -266,7 +266,7 @@ function Header() {
           </SideMenuMiddleDiv>
 
           <SideMenuBottomDiv>
-            {storeState.login.user_id ? (
+            {userId ? (
               <BaseDiv>
                 <Link to='' onClick={() => dispatch(onLogout())}>
                   <BaseSpan textShadow>Logout</BaseSpan>

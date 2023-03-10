@@ -63,8 +63,7 @@ function Quiz() {
   const [quizzes, setQuizzes] = useState([]);
   const CLASSNAME_HIDDEN = "hidden";
 
-  const storeState = useSelector((state) => state);
-  const correctNumber = storeState.record.correct_number;
+  const correctNumber = useSelector((state) => state.record.correct_number);
   const dispatch = useDispatch();
 
   const mixArrayRandomly = (array) => {

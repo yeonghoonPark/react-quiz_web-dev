@@ -56,7 +56,8 @@ function Login() {
   console.log("[Login]");
 
   // state's
-  const storeState = useSelector((state) => state);
+  const userId = useSelector((state) => state.login.user_id);
+  const userPassword = useSelector((state) => state.login.user_password);
   const dispatch = useDispatch();
 
   const inputRefId = useRef(null);
@@ -83,8 +84,8 @@ function Login() {
       setIsNonePassword(true);
       inputRefPassword.current.focus();
     } else {
-      storeState.login.user_id = inputValueId;
-      storeState.login.user_password = inputValuePassword;
+      userId = inputValueId;
+      userPassword = inputValuePassword;
       dispatch(onLogin());
       navigate("/");
     }
@@ -98,7 +99,7 @@ function Login() {
           url: "/v2/user/me",
           success: function (res) {
             console.log(res, "response");
-            storeState.login.user_id = res.kakao_account.email;
+            userId = res.kakao_account.email;
             dispatch(onLogin());
             navigate("/");
           },
@@ -120,7 +121,7 @@ function Login() {
     googleLoginTestSuccess: function (res) {
       console.log(res);
       console.log(res.wt.cu, "이메일");
-      storeState.login.user_id = res.wt.cu;
+      userId = res.wt.cu;
       dispatch(onLogin());
       navigate("/");
     },
