@@ -4,12 +4,12 @@ import BaseButton from "../components/base/BaseButton";
 import BaseSpan from "../components/base/BaseSpan";
 import BaseDiv from "../components/base/BaseDiv";
 import { FaClock, FaCheckCircle } from "react-icons/fa";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import quiz from "../data/quiz.json";
 
 import { useDispatch, useSelector } from "react-redux";
-import { increaseCorrectNumber } from "../reducers/record";
+import { increaseCorrectNumber, testTimeAttack } from "../reducers/record";
 
 const TitleH1 = styled.h1`
   margin-bottom: 1.5rem;
@@ -59,12 +59,15 @@ const QuizMultipleChoiceP = styled.p`
 
 function Quiz() {
   console.log("[Quiz]");
-
   const [quizzes, setQuizzes] = useState([]);
   const CLASSNAME_HIDDEN = "hidden";
 
   const correctNumber = useSelector((state) => state.record.correct_number);
   const dispatch = useDispatch();
+
+  const [minute, setMinute] = useState("00");
+  const [second, setSecond] = useState("00");
+  const [millisecond, setMillisecond] = useState("00");
 
   const mixArrayRandomly = (array) => {
     console.log("[mixArrayRandomly]");
@@ -73,6 +76,7 @@ function Quiz() {
 
   useEffect(() => {
     setQuizzes(mixArrayRandomly(quiz.data));
+    displayItems();
   }, []);
 
   const createHTMLString = () => {
@@ -88,7 +92,7 @@ function Quiz() {
               className='multiple-choice'
               pointer
               onClick={(e) => {
-                countCorrectAnswers(
+                countCorrect(
                   quizzes[index]?.multiple_choice_view1,
                   quizzes[index]?.correct,
                 );
@@ -103,7 +107,7 @@ function Quiz() {
               className='multiple-choice'
               pointer
               onClick={(e) => {
-                countCorrectAnswers(
+                countCorrect(
                   quizzes[index]?.multiple_choice_view2,
                   quizzes[index]?.correct,
                 );
@@ -118,7 +122,7 @@ function Quiz() {
               className='multiple-choice'
               pointer
               onClick={(e) => {
-                countCorrectAnswers(
+                countCorrect(
                   quizzes[index]?.multiple_choice_view3,
                   quizzes[index]?.correct,
                 );
@@ -130,12 +134,13 @@ function Quiz() {
           </QuizMultipleChoiceP>
         </BaseDiv>,
       );
-      displayItems();
+      // displayItems();
     }
     return result;
   };
 
   const displayItems = () => {
+    console.log("[displayItems]");
     const quizBoxes = document.querySelectorAll(".quiz-box");
 
     quizBoxes.forEach((quizBox, index) =>
@@ -148,14 +153,13 @@ function Quiz() {
     const currentQuizBox = e.target.parentNode.parentNode;
     const nextQuizBox = currentQuizBox.nextSibling;
 
-    nextQuizBox
-      ? nextQuizBox.classList.remove(CLASSNAME_HIDDEN)
-      : console.log("no one here");
+    nextQuizBox ? nextQuizBox.classList.remove(CLASSNAME_HIDDEN) : stopTimer();
 
     currentQuizBox.remove();
   };
 
-  const countCorrectAnswers = (clickedItem, correct) => {
+  const countCorrect = (clickedItem, correct) => {
+    console.log("[countCorrect]");
     if (clickedItem === correct) {
       console.log("정답");
       dispatch(increaseCorrectNumber());
@@ -164,16 +168,48 @@ function Quiz() {
     }
   };
 
+  const addZero = (number) => (number < 10 ? "0" + number : "" + number);
+
+  const [timerInterval, setTimerInterval] = useState();
+
+  const startTimer = () => {
+    console.log("[startTimer]");
+    let startingPoint = Date.now();
+    setTimerInterval(
+      setInterval(() => {
+        let currentPoint = new Date(Date.now() - startingPoint);
+        setMinute(addZero(currentPoint.getMinutes()));
+        setSecond(addZero(currentPoint.getSeconds()));
+        setMillisecond(
+          addZero(Math.floor(currentPoint.getMilliseconds() / 10)),
+        );
+      }, 1),
+    );
+  };
+
+  const stopTimer = () => {
+    console.log("[stopTimer]");
+    clearInterval(timerInterval);
+  };
+
   return (
     <BaseContainer>
       <button
         onClick={() => {
-          dispatch(increaseCorrectNumber());
+          startTimer();
         }}
       >
-        버튼
+        Start
       </button>
-      <span>{correctNumber}</span>
+      <button
+        onClick={() => {
+          stopTimer();
+        }}
+      >
+        Stop
+      </button>
+      <button onClick={() => {}}>Incease</button>
+      <span>{}</span>
       <TitleH1>Quiz</TitleH1>
       <QuizContainer>
         <BaseDiv
@@ -202,37 +238,12 @@ function Quiz() {
             borderRadius={"var(--radius-standard)"}
             pointerEventsNone
           >
-            <FaClockIcon /> 소요 시간: 01:56.
+            <FaClockIcon /> 소요 시간: {minute}:{second}.
             <BaseSpan className={"danger"} pointerEventsNone>
-              34
+              {millisecond}
             </BaseSpan>
           </BaseSpan>
         </BaseDiv>
-
-        {/* {quizzes.map((quiz, index) => {
-          return (
-            <BaseDiv padding={"0"} key={index}>
-              <QuizTitleH2 className='bg-dark-blue'>
-                {index + 1}.{quiz.question}
-              </QuizTitleH2>
-              <QuizMultipleChoiceP>
-                <BaseSpan className='multiple-choice' pointer>
-                  ① {quiz.multiple_choice_view1}
-                </BaseSpan>
-              </QuizMultipleChoiceP>
-              <QuizMultipleChoiceP>
-                <BaseSpan className='multiple-choice' pointer>
-                  ② {quiz.multiple_choice_view2}
-                </BaseSpan>
-              </QuizMultipleChoiceP>
-              <QuizMultipleChoiceP>
-                <BaseSpan className='multiple-choice' pointer>
-                  ③ {quiz.multiple_choice_view3}
-                </BaseSpan>
-              </QuizMultipleChoiceP>
-            </BaseDiv>
-          );
-        })} */}
 
         {createHTMLString()}
       </QuizContainer>
