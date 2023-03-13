@@ -20,6 +20,12 @@ const StyledButton = styled.button`
     background-color: ${(p) =>
       p.hoverBackgroundColor || "var(--color-hover-blue)"} ;
   }
+
+  &.large{
+    min-width: 218px;
+    padding: 14px 18px;
+  }
+
   @media all and (min-width: 30rem) and (max-width: 47.9375rem) {
   
   }
@@ -29,6 +35,7 @@ const StyledButton = styled.button`
 `;
 
 function BaseButton({
+  className,
   width,
   minWidth,
   margin,
@@ -46,6 +53,7 @@ function BaseButton({
 }) {
   return (
     <StyledButton
+      className={className}
       width={width}
       minWidth={minWidth}
       margin={margin}
