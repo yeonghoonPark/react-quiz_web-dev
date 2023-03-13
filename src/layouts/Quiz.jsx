@@ -9,7 +9,11 @@ import { Link } from "react-router-dom";
 import quiz from "../data/quiz.json";
 
 import { useDispatch, useSelector } from "react-redux";
-import { increaseCorrectNumber, testTimeAttack } from "../reducers/record";
+import {
+  increaseCorrectNumber,
+  resetCorrectNumber,
+  testTimeAttack,
+} from "../reducers/record";
 
 const TitleH1 = styled.h1`
   margin-bottom: 1.5rem;
@@ -74,79 +78,135 @@ function Quiz() {
     return array.sort(() => Math.random() - 0.5);
   };
 
+  const [isReady, setIsReady] = useState(false);
+
   useEffect(() => {
-    setQuizzes(mixArrayRandomly(quiz.data));
-    displayItems();
+    return () => dispatch(resetCorrectNumber());
   }, []);
 
   const createHTMLString = () => {
+    console.log("[createHTMLString]");
     const result = [];
     for (let index = 0; index < 10; index++) {
-      result.push(
-        <BaseDiv className='quiz-box' padding={"0"} key={index}>
-          <QuizTitleH2 className='bg-dark-blue'>
-            {index + 1}.{quizzes[index]?.question}
-          </QuizTitleH2>
-          <QuizMultipleChoiceP>
-            <BaseSpan
-              className='multiple-choice'
-              pointer
-              onClick={(e) => {
-                countCorrect(
-                  quizzes[index]?.multiple_choice_view1,
-                  quizzes[index]?.correct,
-                );
-                removeElement(e);
-              }}
-            >
-              ① {quizzes[index]?.multiple_choice_view1}
-            </BaseSpan>
-          </QuizMultipleChoiceP>
-          <QuizMultipleChoiceP>
-            <BaseSpan
-              className='multiple-choice'
-              pointer
-              onClick={(e) => {
-                countCorrect(
-                  quizzes[index]?.multiple_choice_view2,
-                  quizzes[index]?.correct,
-                );
-                removeElement(e);
-              }}
-            >
-              ② {quizzes[index]?.multiple_choice_view2}
-            </BaseSpan>
-          </QuizMultipleChoiceP>
-          <QuizMultipleChoiceP>
-            <BaseSpan
-              className='multiple-choice'
-              pointer
-              onClick={(e) => {
-                countCorrect(
-                  quizzes[index]?.multiple_choice_view3,
-                  quizzes[index]?.correct,
-                );
-                removeElement(e);
-              }}
-            >
-              ③ {quizzes[index]?.multiple_choice_view3}
-            </BaseSpan>
-          </QuizMultipleChoiceP>
-        </BaseDiv>,
-      );
-      // displayItems();
+      if (index === 0) {
+        result.push(
+          <BaseDiv className='quiz-box' padding={"0"} key={index}>
+            <QuizTitleH2 className='bg-dark-blue'>
+              {index + 1}.{quizzes[index]?.question}
+            </QuizTitleH2>
+            <QuizMultipleChoiceP>
+              <BaseSpan
+                className='multiple-choice'
+                pointer
+                onClick={(e) => {
+                  countCorrect(
+                    quizzes[index]?.multiple_choice_view1,
+                    quizzes[index]?.correct,
+                  );
+                  removeElement(e);
+                }}
+              >
+                ① {quizzes[index]?.multiple_choice_view1}
+              </BaseSpan>
+            </QuizMultipleChoiceP>
+            <QuizMultipleChoiceP>
+              <BaseSpan
+                className='multiple-choice'
+                pointer
+                onClick={(e) => {
+                  countCorrect(
+                    quizzes[index]?.multiple_choice_view2,
+                    quizzes[index]?.correct,
+                  );
+                  removeElement(e);
+                }}
+              >
+                ② {quizzes[index]?.multiple_choice_view2}
+              </BaseSpan>
+            </QuizMultipleChoiceP>
+            <QuizMultipleChoiceP>
+              <BaseSpan
+                className='multiple-choice'
+                pointer
+                onClick={(e) => {
+                  countCorrect(
+                    quizzes[index]?.multiple_choice_view3,
+                    quizzes[index]?.correct,
+                  );
+                  removeElement(e);
+                }}
+              >
+                ③ {quizzes[index]?.multiple_choice_view3}
+              </BaseSpan>
+            </QuizMultipleChoiceP>
+          </BaseDiv>,
+        );
+      } else {
+        result.push(
+          <BaseDiv className='quiz-box hidden' padding={"0"} key={index}>
+            <QuizTitleH2 className='bg-dark-blue'>
+              {index + 1}.{quizzes[index]?.question}
+            </QuizTitleH2>
+            <QuizMultipleChoiceP>
+              <BaseSpan
+                className='multiple-choice'
+                pointer
+                onClick={(e) => {
+                  countCorrect(
+                    quizzes[index]?.multiple_choice_view1,
+                    quizzes[index]?.correct,
+                  );
+                  removeElement(e);
+                }}
+              >
+                ① {quizzes[index]?.multiple_choice_view1}
+              </BaseSpan>
+            </QuizMultipleChoiceP>
+            <QuizMultipleChoiceP>
+              <BaseSpan
+                className='multiple-choice'
+                pointer
+                onClick={(e) => {
+                  countCorrect(
+                    quizzes[index]?.multiple_choice_view2,
+                    quizzes[index]?.correct,
+                  );
+                  removeElement(e);
+                }}
+              >
+                ② {quizzes[index]?.multiple_choice_view2}
+              </BaseSpan>
+            </QuizMultipleChoiceP>
+            <QuizMultipleChoiceP>
+              <BaseSpan
+                className='multiple-choice'
+                pointer
+                onClick={(e) => {
+                  countCorrect(
+                    quizzes[index]?.multiple_choice_view3,
+                    quizzes[index]?.correct,
+                  );
+                  removeElement(e);
+                }}
+              >
+                ③ {quizzes[index]?.multiple_choice_view3}
+              </BaseSpan>
+            </QuizMultipleChoiceP>
+          </BaseDiv>,
+        );
+      }
     }
     return result;
   };
 
-  const displayItems = () => {
-    console.log("[displayItems]");
-    const quizBoxes = document.querySelectorAll(".quiz-box");
+  // const setDisplayItems = () => {
+  //   console.log("[setDisplayItems]");
+  //   const quizBoxes = document.querySelectorAll(".quiz-box");
 
-    quizBoxes.forEach((quizBox, index) =>
-      index !== 0 ? quizBox.classList.add(CLASSNAME_HIDDEN) : null,
-    );
-  };
+  //   quizBoxes.forEach((quizBox, index) =>
+  //     index !== 0 ? quizBox.classList.add(CLASSNAME_HIDDEN) : null,
+  //   );
+  // };
 
   const removeElement = (e) => {
     // console.log("[removeElement]");
@@ -192,10 +252,19 @@ function Quiz() {
     clearInterval(timerInterval);
   };
 
+  const onHandleStart = () => {
+    setIsReady(true);
+    setQuizzes(mixArrayRandomly(quiz.data));
+    startTimer();
+  };
+
   return (
     <BaseContainer>
       <button
         onClick={() => {
+          setIsReady(true);
+          setQuizzes(mixArrayRandomly(quiz.data));
+          // setDisplayItems();
           startTimer();
         }}
       >
@@ -211,42 +280,60 @@ function Quiz() {
       <button onClick={() => {}}>Incease</button>
       <span>{}</span>
       <TitleH1>Quiz</TitleH1>
-      <QuizContainer>
-        <BaseDiv
-          display={"flex"}
-          justifyContent={"space-between"}
-          alignItems={"center"}
-          padding={"0 0 1.5rem"}
-          mobileFlexDirection={"column"}
-          mobileAlignItems={"flex-start"}
-        >
-          <BaseSpan
-            className='tablet-margin-bottom'
-            padding={"8px"}
-            border={"1px solid var(--color-gray-500)"}
-            borderRadius={"var(--radius-standard)"}
-            pointerEventsNone
+      {!isReady ? (
+        <QuizContainer>
+          <BaseDiv
+            display={"flex"}
+            flexDirection={"column"}
+            alignItems={"center"}
+            padding={"3rem 0"}
           >
-            <FaCheckCircleIcon /> 맞춘 갯수:{" "}
-            <BaseSpan className={"danger"} pointerEventsNone>
-              {correctNumber}
+            <BaseSpan margin={"0 0 3rem"} fontSize={"2rem"}>
+              준비되셨나요?
             </BaseSpan>
-          </BaseSpan>
-          <BaseSpan
-            padding={"8px"}
-            border={"1px solid var(--color-gray-500)"}
-            borderRadius={"var(--radius-standard)"}
-            pointerEventsNone
+            <BaseButton className={"large"} onClick={onHandleStart}>
+              Start
+            </BaseButton>
+          </BaseDiv>
+        </QuizContainer>
+      ) : (
+        <QuizContainer>
+          <BaseDiv
+            display={"flex"}
+            justifyContent={"space-between"}
+            alignItems={"center"}
+            padding={"0 0 1.5rem"}
+            mobileFlexDirection={"column"}
+            mobileAlignItems={"flex-start"}
           >
-            <FaClockIcon /> 소요 시간: {minute}:{second}.
-            <BaseSpan className={"danger"} pointerEventsNone>
-              {millisecond}
+            <BaseSpan
+              className='tablet-margin-bottom'
+              padding={"8px"}
+              border={"1px solid var(--color-gray-500)"}
+              borderRadius={"var(--radius-standard)"}
+              pointerEventsNone
+            >
+              <FaCheckCircleIcon /> 맞춘 갯수:{" "}
+              <BaseSpan className={"danger"} pointerEventsNone>
+                {correctNumber}
+              </BaseSpan>
             </BaseSpan>
-          </BaseSpan>
-        </BaseDiv>
+            <BaseSpan
+              padding={"8px"}
+              border={"1px solid var(--color-gray-500)"}
+              borderRadius={"var(--radius-standard)"}
+              pointerEventsNone
+            >
+              <FaClockIcon /> 소요 시간: {minute}:{second}.
+              <BaseSpan className={"danger"} pointerEventsNone>
+                {millisecond}
+              </BaseSpan>
+            </BaseSpan>
+          </BaseDiv>
 
-        {createHTMLString()}
-      </QuizContainer>
+          {createHTMLString()}
+        </QuizContainer>
+      )}
     </BaseContainer>
   );
 }
