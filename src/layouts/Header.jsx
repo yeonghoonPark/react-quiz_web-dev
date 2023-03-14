@@ -139,7 +139,8 @@ const FaSunIcon = styled(FaSun)`
 function Header() {
   console.log("[Header]");
 
-  const userId = useSelector((state) => state.login.user_id);
+  // let userId = useSelector((state) => state.login.user_id);
+  const storeState = useSelector((state) => state);
   const dispatch = useDispatch();
 
   const [theme, setTheme] = useState("light");
@@ -171,43 +172,55 @@ function Header() {
           </LogoDiv>
           <BaseDiv mobileDisplayNone>
             <Link to='/quiz'>
-              <BaseSpan textShadow>Quiz</BaseSpan>
+              <BaseSpan textShadow userSelectNone>
+                Quiz
+              </BaseSpan>
             </Link>
           </BaseDiv>
           <BaseDiv mobileDisplayNone>
             <Link to='/ranking'>
-              <BaseSpan textShadow>Ranking</BaseSpan>
+              <BaseSpan textShadow userSelectNone>
+                Ranking
+              </BaseSpan>
             </Link>
           </BaseDiv>
           <BaseDiv mobileDisplayNone>
             <Link to='/notice'>
-              <BaseSpan textShadow>Notice</BaseSpan>
+              <BaseSpan textShadow userSelectNone>
+                Notice
+              </BaseSpan>
             </Link>
           </BaseDiv>
-          {userId ? (
+          {storeState.login.user_id ? (
             <BaseDiv mobileDisplayNone>
               <Link to='/notice/write'>
-                <BaseSpan textShadow>Write</BaseSpan>
+                <BaseSpan textShadow userSelectNone>
+                  Write
+                </BaseSpan>
               </Link>
             </BaseDiv>
           ) : null}
           <BaseDiv mobileDisplayNone>
-            <BaseSpan pointer textShadow>
+            <BaseSpan pointer textShadow userSelectNone>
               Help
             </BaseSpan>
           </BaseDiv>
         </MenuLeftDiv>
         <MenuRightDiv>
-          {userId ? (
+          {storeState.login.user_id ? (
             <BaseDiv mobileDisplayNone>
               <Link to='' onClick={() => dispatch(onLogout())}>
-                <BaseSpan textShadow>Logout</BaseSpan>
+                <BaseSpan textShadow userSelectNone>
+                  Logout
+                </BaseSpan>
               </Link>
             </BaseDiv>
           ) : (
             <BaseDiv mobileDisplayNone>
               <Link to='/login'>
-                <BaseSpan textShadow>Login</BaseSpan>
+                <BaseSpan textShadow userSelectNone>
+                  Login
+                </BaseSpan>
               </Link>
             </BaseDiv>
           )}
@@ -229,7 +242,7 @@ function Header() {
         <SideMenuDiv>
           <SideMenuTopDiv>
             <BaseDiv>
-              <BaseSpan pointerEventsNone>Quiz-Web</BaseSpan>
+              <BaseSpan userSelectNone>Quiz-Web</BaseSpan>
             </BaseDiv>
 
             <FaTimesIcon onClick={() => onHandleSideNav()} />
@@ -238,23 +251,31 @@ function Header() {
           <SideMenuMiddleDiv>
             <BaseDiv margin={"12px auto"}>
               <Link to='/quiz' onClick={() => onHandleSideNav()}>
-                <BaseSpan textShadow>Quiz</BaseSpan>
+                <BaseSpan textShadow userSelectNone>
+                  Quiz
+                </BaseSpan>
               </Link>
             </BaseDiv>
             <BaseDiv margin={"12px auto"}>
               <Link to='/ranking' onClick={() => onHandleSideNav()}>
-                <BaseSpan textShadow>Ranking</BaseSpan>
+                <BaseSpan textShadow userSelectNone>
+                  Ranking
+                </BaseSpan>
               </Link>
             </BaseDiv>
             <BaseDiv margin={"12px auto"}>
               <Link to='/notice' onClick={() => onHandleSideNav()}>
-                <BaseSpan textShadow>Notice</BaseSpan>
+                <BaseSpan textShadow userSelectNone>
+                  Notice
+                </BaseSpan>
               </Link>
             </BaseDiv>
-            {userId ? (
+            {storeState.login.user_id ? (
               <BaseDiv margin={"12px auto"}>
                 <Link to='/notice/write' onClick={() => onHandleSideNav()}>
-                  <BaseSpan textShadow>Write</BaseSpan>
+                  <BaseSpan textShadow userSelectNone>
+                    Write
+                  </BaseSpan>
                 </Link>
               </BaseDiv>
             ) : null}
@@ -266,16 +287,20 @@ function Header() {
           </SideMenuMiddleDiv>
 
           <SideMenuBottomDiv>
-            {userId ? (
+            {storeState.login.user_id ? (
               <BaseDiv>
                 <Link to='' onClick={() => dispatch(onLogout())}>
-                  <BaseSpan textShadow>Logout</BaseSpan>
+                  <BaseSpan textShadow userSelectNone>
+                    Logout
+                  </BaseSpan>
                 </Link>
               </BaseDiv>
             ) : (
               <BaseDiv>
                 <Link to='/login' onClick={() => onHandleSideNav()}>
-                  <BaseSpan textShadow>Login</BaseSpan>
+                  <BaseSpan textShadow userSelectNone>
+                    Login
+                  </BaseSpan>
                 </Link>
               </BaseDiv>
             )}

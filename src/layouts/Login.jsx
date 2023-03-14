@@ -20,6 +20,7 @@ const TitleH1 = styled.h1`
   font-weight: 700;
   text-align: center;
   pointer-events: none;
+  user-select: none;
   @media all and (max-width: 29.9375rem) {
     padding: 1.5rem 0;
     font-size: 1.5rem;
@@ -56,8 +57,9 @@ function Login() {
   console.log("[Login]");
 
   // state's
-  const userId = useSelector((state) => state.login.user_id);
-  const userPassword = useSelector((state) => state.login.user_password);
+  // let userId = useSelector((state) => state.login.user_id);
+  // let userPassword = useSelector((state) => state.login.user_password);
+  const storeState = useSelector((state) => state);
   const dispatch = useDispatch();
 
   const inputRefId = useRef(null);
@@ -84,8 +86,10 @@ function Login() {
       setIsNonePassword(true);
       inputRefPassword.current.focus();
     } else {
-      userId = inputValueId;
-      userPassword = inputValuePassword;
+      // userId = inputValueId;
+      // userPassword = inputValuePassword;
+      storeState.login.user_id = inputValueId;
+      storeState.login.user_password = inputRefPassword;
       dispatch(onLogin());
       navigate("/");
     }
@@ -99,7 +103,7 @@ function Login() {
           url: "/v2/user/me",
           success: function (res) {
             console.log(res, "response");
-            userId = res.kakao_account.email;
+            storeState.login.user_id = res.kakao_account.email;
             dispatch(onLogin());
             navigate("/");
           },
@@ -121,7 +125,7 @@ function Login() {
     googleLoginTestSuccess: function (res) {
       console.log(res);
       console.log(res.wt.cu, "이메일");
-      userId = res.wt.cu;
+      storeState.login.user_id = res.wt.cu;
       dispatch(onLogin());
       navigate("/");
     },
@@ -204,7 +208,7 @@ function Login() {
           padding={"8px 0"}
         >
           <hr style={{ width: "33%" }} />
-          <BaseSpan width={"34%"} textAlign={"center"} pointerEventsNone>
+          <BaseSpan width={"34%"} textAlign={"center"} userSelectNone>
             Social
           </BaseSpan>
           <hr style={{ width: "33%" }} />

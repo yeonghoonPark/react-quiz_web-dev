@@ -88,9 +88,7 @@ function Home() {
         padding={"0 8px 4rem"}
       >
         <Link to='/quiz'>
-          <BaseButton width={"22%"} minWidth={"218px"} padding={"14px 18px"}>
-            Quiz Start
-          </BaseButton>
+          <BaseButton className={"large"}>Quiz Start</BaseButton>
         </Link>
       </BaseDiv>
     </BaseContainer>
