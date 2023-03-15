@@ -12,6 +12,7 @@ const StyledSpan = styled.span`
   background-color: ${(p) => p.backgroundColor || {}};
   cursor: ${(p) => (p.pointer ? "pointer" : {})};
   pointer-events: ${(p) => (p.pointerEventsNone ? "none" : "auto")};
+  user-select: ${(p) => (p.userSelectNone ? "none" : "all")};
 
   &:hover {
     text-shadow: ${(p) =>
@@ -40,6 +41,9 @@ const StyledSpan = styled.span`
   }
 
   @media all and (max-width: 29.9375rem) {
+    &.mobile-font-s {
+      font-size: 0.8rem;
+    }
   }
 `;
 
@@ -55,6 +59,7 @@ function BaseSpan({
   backgroundColor,
   pointer,
   pointerEventsNone,
+  userSelectNone,
   textShadow,
   className,
   onClick,
@@ -73,6 +78,7 @@ function BaseSpan({
       backgroundColor={backgroundColor}
       pointer={pointer}
       pointerEventsNone={pointerEventsNone}
+      userSelectNone={userSelectNone}
       textShadow={textShadow}
       className={className}
       onClick={onClick}
