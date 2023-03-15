@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 const StyledDiv = styled.div`
   display: ${(p) => p.display || {}};
+  flex-direction: ${(p) => p.flexDirection || "row"};
   justify-content: ${(p) => p.justifyContent || {}};
   align-items: ${(p) => p.alignItems || {}};
   width: ${(p) => p.width || {}};
@@ -12,6 +13,11 @@ const StyledDiv = styled.div`
   padding: ${(p) => p.padding || "8px"};
   box-shadow: ${(p) => p.boxShadow || {}};
   transition: ${(p) => p.transition || {}};
+
+  &.hidden {
+    display: none;
+  }
+
   @media all and (max-width: 47.9375rem) {
     display: ${(p) => (p.mobileDisplayNone ? "none" : {})};
     flex-direction: ${(p) => p.mobileFlexDirection || {}};
@@ -24,7 +30,9 @@ const StyledDiv = styled.div`
 `;
 
 function BaseDiv({
+  className,
   display,
+  flexDirection,
   justifyContent,
   alignItems,
   width,
@@ -42,7 +50,9 @@ function BaseDiv({
 }) {
   return (
     <StyledDiv
+      className={className}
       display={display}
+      flexDirection={flexDirection}
       justifyContent={justifyContent}
       alignItems={alignItems}
       width={width}
