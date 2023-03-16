@@ -3,6 +3,7 @@ import BaseContainer from "../components/base/BaseContainer";
 import BaseButton from "../components/base/BaseButton";
 import BaseSpan from "../components/base/BaseSpan";
 import BaseDiv from "../components/base/BaseDiv";
+import AppAlert from "../components/AppAlert";
 import { FaClock, FaCheckCircle } from "react-icons/fa";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
@@ -30,6 +31,7 @@ const TitleH1 = styled.h1`
 `;
 
 const QuizContainer = styled.div`
+  position: relative;
   width: 70%;
   min-width: 314px;
   margin: 0 auto;
@@ -93,130 +95,13 @@ function Quiz() {
   const countIntervalRef = useRef(null);
   const CLASSNAME_HIDDEN = "hidden";
 
+  const [isAlert, setIsAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertBackground, setAlertBackground] = useState("");
+
   const mixArrayRandomly = (array) => {
     console.log("[mixArrayRandomly]");
     return array.sort(() => Math.random() - 0.5);
-  };
-
-  const createHTMLString = () => {
-    // console.log("[createHTMLString]");
-    const result = [];
-    for (let index = 0; index < 10; index++) {
-      if (index === 0) {
-        result.push(
-          <BaseDiv className='quiz-box' padding={"0"} key={index}>
-            <QuizTitleH2 className='bg-dark-blue'>
-              {index + 1}.{quizzes[index]?.question}
-            </QuizTitleH2>
-            <QuizMultipleChoiceP>
-              <BaseSpan
-                className='multiple-choice'
-                pointer
-                userSelectNone
-                onClick={(e) => {
-                  countCorrect(
-                    quizzes[index]?.multiple_choice_view1,
-                    quizzes[index]?.correct,
-                  );
-                  removeElement(e);
-                }}
-              >
-                ① {quizzes[index]?.multiple_choice_view1}
-              </BaseSpan>
-            </QuizMultipleChoiceP>
-            <QuizMultipleChoiceP>
-              <BaseSpan
-                className='multiple-choice'
-                pointer
-                userSelectNone
-                onClick={(e) => {
-                  countCorrect(
-                    quizzes[index]?.multiple_choice_view2,
-                    quizzes[index]?.correct,
-                  );
-                  removeElement(e);
-                }}
-              >
-                ② {quizzes[index]?.multiple_choice_view2}
-              </BaseSpan>
-            </QuizMultipleChoiceP>
-            <QuizMultipleChoiceP>
-              <BaseSpan
-                className='multiple-choice'
-                pointer
-                userSelectNone
-                onClick={(e) => {
-                  countCorrect(
-                    quizzes[index]?.multiple_choice_view3,
-                    quizzes[index]?.correct,
-                  );
-                  removeElement(e);
-                }}
-              >
-                ③ {quizzes[index]?.multiple_choice_view3}
-              </BaseSpan>
-            </QuizMultipleChoiceP>
-          </BaseDiv>,
-        );
-      } else {
-        result.push(
-          <BaseDiv className='quiz-box hidden' padding={"0"} key={index}>
-            <QuizTitleH2 className='bg-dark-blue'>
-              {index + 1}.{quizzes[index]?.question}
-            </QuizTitleH2>
-            <QuizMultipleChoiceP>
-              <BaseSpan
-                className='multiple-choice'
-                pointer
-                userSelectNone
-                onClick={(e) => {
-                  countCorrect(
-                    quizzes[index]?.multiple_choice_view1,
-                    quizzes[index]?.correct,
-                  );
-                  removeElement(e);
-                }}
-              >
-                ① {quizzes[index]?.multiple_choice_view1}
-              </BaseSpan>
-            </QuizMultipleChoiceP>
-            <QuizMultipleChoiceP>
-              <BaseSpan
-                className='multiple-choice'
-                pointer
-                userSelectNone
-                onClick={(e) => {
-                  countCorrect(
-                    quizzes[index]?.multiple_choice_view2,
-                    quizzes[index]?.correct,
-                  );
-                  removeElement(e);
-                }}
-              >
-                ② {quizzes[index]?.multiple_choice_view2}
-              </BaseSpan>
-            </QuizMultipleChoiceP>
-            <QuizMultipleChoiceP>
-              <BaseSpan
-                className='multiple-choice'
-                pointer
-                userSelectNone
-                onClick={(e) => {
-                  countCorrect(
-                    quizzes[index]?.multiple_choice_view3,
-                    quizzes[index]?.correct,
-                  );
-                  removeElement(e);
-                }}
-              >
-                ③ {quizzes[index]?.multiple_choice_view3}
-              </BaseSpan>
-            </QuizMultipleChoiceP>
-          </BaseDiv>,
-        );
-      }
-    }
-    return result;
   };
 
   const removeElement = (e) => {
@@ -239,6 +124,92 @@ function Quiz() {
     } else {
       console.log("오답");
     }
+  };
+
+  const onClickMultipleChoiceView = (e, clickedItem, correct) => {
+    if (clickedItem === correct) {
+      setAlertMessage("정답입니다.");
+      setAlertBackground("bg-primary");
+    } else {
+      setAlertMessage("오답입니다.");
+      setAlertBackground("bg-danger");
+    }
+    setIsAlert(true);
+    setTimeout(() => {
+      countCorrect(clickedItem, correct);
+      removeElement(e);
+      setIsAlert(false);
+    }, 1500);
+  };
+
+  const returnQuizBoxClassName = (index) =>
+    index === 0 ? "quiz-box" : "quiz-box hidden";
+
+  const createHTMLString = () => {
+    // console.log("[createHTMLString]");
+    const result = [];
+    for (let index = 0; index < 10; index++) {
+      result.push(
+        <BaseDiv
+          className={returnQuizBoxClassName(index)}
+          padding={"0"}
+          key={index}
+        >
+          <QuizTitleH2 className='bg-dark-blue'>
+            {index + 1}.{quizzes[index]?.question}
+          </QuizTitleH2>
+          <QuizMultipleChoiceP>
+            <BaseSpan
+              className='multiple-choice'
+              pointer
+              userSelectNone
+              onClick={(e) => {
+                onClickMultipleChoiceView(
+                  e,
+                  quizzes[index]?.multiple_choice_view1,
+                  quizzes[index]?.correct,
+                );
+              }}
+            >
+              ① {quizzes[index]?.multiple_choice_view1}
+            </BaseSpan>
+          </QuizMultipleChoiceP>
+          <QuizMultipleChoiceP>
+            <BaseSpan
+              className='multiple-choice'
+              pointer
+              userSelectNone
+              onClick={(e) => {
+                onClickMultipleChoiceView(
+                  e,
+                  quizzes[index]?.multiple_choice_view2,
+                  quizzes[index]?.correct,
+                );
+              }}
+            >
+              ② {quizzes[index]?.multiple_choice_view2}
+            </BaseSpan>
+          </QuizMultipleChoiceP>
+          <QuizMultipleChoiceP>
+            <BaseSpan
+              className='multiple-choice'
+              pointer
+              userSelectNone
+              onClick={(e) => {
+                onClickMultipleChoiceView(
+                  e,
+                  quizzes[index]?.multiple_choice_view3,
+                  quizzes[index]?.correct,
+                );
+              }}
+            >
+              ③ {quizzes[index]?.multiple_choice_view3}
+            </BaseSpan>
+          </QuizMultipleChoiceP>
+        </BaseDiv>,
+      );
+    }
+    return result;
   };
 
   const addZero = (number) => (number < 10 ? "0" + number : "" + number);
@@ -288,7 +259,7 @@ function Quiz() {
     stopTimer();
   };
 
-  const returnText = (correctNumber) => {
+  const returnRecordMessage = (correctNumber) => {
     // 0 ~ 1
     if (correctNumber < 2) {
       return `...위로의 말을 전합니다.`;
@@ -308,7 +279,6 @@ function Quiz() {
   };
 
   const onHandleRestart = () => {
-    // dispatch(resetCorrectNumber());
     setCorrectNumber(0);
     setCount(3);
     setIsReady(false);
@@ -318,8 +288,6 @@ function Quiz() {
 
   useEffect(() => {
     return () => {
-      // dispatch(resetCorrectNumber());
-
       clearInterval(countIntervalRef.current);
       countIntervalRef.current = null;
       onHandleRestart();
@@ -328,6 +296,13 @@ function Quiz() {
 
   return (
     <BaseContainer>
+      {isAlert ? (
+        <AppAlert
+          color={"var(--color-white)"}
+          className={alertBackground}
+          message={alertMessage}
+        />
+      ) : null}
       <TitleH1>Quiz</TitleH1>
       {!isReady ? (
         <QuizContainer>
@@ -401,7 +376,7 @@ function Quiz() {
             >
               <QuizTitleH2 className='bg-dark-blue'>'{userId}'</QuizTitleH2>
               <BaseSpan margin={"0 0 1.5rem"}>
-                {returnText(correctNumber)}
+                {returnRecordMessage(correctNumber)}
               </BaseSpan>
               <BaseDiv
                 display={"flex"}
