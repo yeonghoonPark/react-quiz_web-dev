@@ -21,10 +21,11 @@
   --color-orange: #e06c75;
   --color-peach: #f07474;
   --color-blue: #0d6efd;
-  --color-light-blue: #eff0ff;
   --color-dark-blue: #1b1b1f;
+  --color-light-blue: #eff0ff;
   --color-sky: #5dbdfd;
-  --color-light-green: #87fca4;
+  --color-light-green: #d1e7dd;
+  --color-light-red: #f8d7da;
 
   --color-hover-blue: #0b5ed7;
   --color-hover-fink: #d85555;
@@ -58,6 +59,14 @@ body[data-theme="light"] .primary {
   color: var(--color-blue);
 }
 
+body[data-theme="light"] .bg-danger {
+  background-color: var(--color-red);
+}
+
+body[data-theme="light"] .bg-primary {
+  background-color: var(--color-blue);
+}
+
 body[data-theme="dark"] {
   color: var(--color-gray-100);
   background: linear-gradient(
@@ -74,6 +83,18 @@ body[data-theme="dark"] .danger {
 
 body[data-theme="dark"] .primary {
   color: var(--color-sky);
+}
+
+body[data-theme="dark"] .bg-danger {
+  background-color: var(--color-orange);
+}
+
+body[data-theme="dark"] .bg-primary {
+  background-color: var(--color-sky);
+}
+
+body[data-theme="dark"] .bg-gray-100 {
+  background-color: var(--color-gray-100);
 }
 
 body[data-theme="dark"] .black {
