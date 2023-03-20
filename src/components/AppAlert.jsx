@@ -13,8 +13,8 @@ const StyledAppAlert = styled.div`
 const AlertMessageSpan = styled.span`
   position: absolute;
   top: 44%;
-  left: 47%;
-  padding: 8px 16px;
+  left: 47.5%;
+  padding: 8px 32px;
   font-size: 1.5rem;
   transform: translate(-40%, -50%);
   border-radius: var(--radius-standard);

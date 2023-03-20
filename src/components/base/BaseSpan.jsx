@@ -31,7 +31,9 @@ const StyledSpan = styled.span`
   }
 
   @media all and (max-width: 47.9375rem) {
-    display: ${(p) => (p.mobileDisplayNone ? "none" : {})};
+    &.tablet-display-none {
+      display: none;
+    }
     &.tablet-margin-bottom {
       margin-bottom: 8px;
     }
@@ -41,8 +43,12 @@ const StyledSpan = styled.span`
   }
 
   @media all and (max-width: 29.9375rem) {
-    &.mobile-font-s {
-      font-size: 0.8rem;
+    font-size: ${(p) => p.mobileFontSize || {}};
+    &.mobile-display-show {
+      display: block;
+    }
+    &.mobile-margin-right {
+      margin-right: 8px;
     }
   }
 `;
@@ -53,6 +59,7 @@ function BaseSpan({
   margin,
   padding,
   fontSize,
+  mobileFontSize,
   textAlign,
   border,
   borderRadius,
@@ -69,6 +76,7 @@ function BaseSpan({
     <StyledSpan
       display={display}
       fontSize={fontSize}
+      mobileFontSize={mobileFontSize}
       width={width}
       margin={margin}
       padding={padding}

@@ -16,6 +16,7 @@ const StyledButton = styled.button`
   background-color: ${(p) => p.backgroundColor || "var(--color-blue)"};
   cursor: pointer;
   transition: var(--transition-300);
+  user-select: none;
   &:hover{
     background-color: ${(p) =>
       p.hoverBackgroundColor || "var(--color-hover-blue)"} ;
