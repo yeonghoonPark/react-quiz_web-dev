@@ -3,10 +3,10 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "./layouts/Header";
 import Home from "./layouts/Home";
 import Quiz from "./layouts/Quiz";
-import Ranking from "./layouts/Ranking";
+import Rank from "./layouts/Rank";
 import Notice from "./layouts/notice/Notice";
 import NoticeWrite from "./layouts/notice/NoticeWrite";
-import Login from "./layouts/Logins";
+import Login from "./layouts/Login";
 
 function App() {
   return (
@@ -16,7 +16,7 @@ function App() {
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/quiz' element={<Quiz />} />
-          <Route path='/ranking' element={<Ranking />} />
+          <Route path='/ranking' element={<Rank />} />
           <Route path='/notice' element={<Notice />} />
           <Route path='/notice/write' element={<NoticeWrite />} />
           <Route path='/login' element={<Login />} />

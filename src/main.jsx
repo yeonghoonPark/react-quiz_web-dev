@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "../public/assets/css/common.css";
-import "../public/assets/css/reset.css";
+import "../public/assets/css/common.scss";
+import "../public/assets/css/reset.scss";
 import App from "./App";
 
 import { createStore } from "redux";

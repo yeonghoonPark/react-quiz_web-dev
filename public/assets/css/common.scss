@@ -49,22 +49,32 @@ body[data-theme="light"] {
     var(--color-gray-300)
   );
   background-attachment: fixed;
-}
 
-body[data-theme="light"] .danger {
-  color: var(--color-red);
-}
+  .danger {
+    color: var(--color-red);
+  }
 
-body[data-theme="light"] .primary {
-  color: var(--color-blue);
-}
+  .primary {
+    color: var(--color-blue);
+  }
 
-body[data-theme="light"] .bg-danger {
-  background-color: var(--color-red);
-}
+  .bg-danger {
+    background-color: var(--color-red);
+  }
 
-body[data-theme="light"] .bg-primary {
-  background-color: var(--color-blue);
+  .bg-primary {
+    background-color: var(--color-blue);
+  }
+
+  .checked-none {
+    background-color: var(--color-white);
+    color: var(--color-black);
+  }
+
+  .checked {
+    background-color: var(--color-black);
+    color: var(--color-white);
+  }
 }
 
 body[data-theme="dark"] {
@@ -75,36 +85,46 @@ body[data-theme="dark"] {
     var(--color-gray-900)
   );
   background-attachment: fixed;
-}
 
-body[data-theme="dark"] .danger {
-  color: var(--color-orange);
-}
+  .black {
+    color: var(--color-black);
+  }
 
-body[data-theme="dark"] .primary {
-  color: var(--color-sky);
-}
+  .danger {
+    color: var(--color-orange);
+  }
 
-body[data-theme="dark"] .bg-danger {
-  background-color: var(--color-orange);
-}
+  .primary {
+    color: var(--color-sky);
+  }
 
-body[data-theme="dark"] .bg-primary {
-  background-color: var(--color-sky);
-}
+  .bg-danger {
+    background-color: var(--color-orange);
+  }
 
-body[data-theme="dark"] .bg-gray-100 {
-  background-color: var(--color-gray-100);
-}
+  .bg-primary {
+    background-color: var(--color-sky);
+  }
 
-body[data-theme="dark"] .black {
-  color: var(--color-black);
-}
+  .bg-gray-100 {
+    background-color: var(--color-gray-100);
+  }
 
-body[data-theme="dark"] .bg-dark-blue {
-  background-color: var(--color-dark-blue);
-}
+  .bg-dark-blue {
+    background-color: var(--color-dark-blue);
+  }
 
-body[data-theme="dark"] .multiple-choice:hover {
-  background-color: var(--color-dark-blue);
+  .multiple-choice:hover {
+    background-color: var(--color-dark-blue);
+  }
+
+  .checked-none {
+    background-color: var(--color-black);
+    color: var(--color-white);
+  }
+
+  .checked {
+    background-color: var(--color-gray-100);
+    color: var(--color-black);
+  }
 }
