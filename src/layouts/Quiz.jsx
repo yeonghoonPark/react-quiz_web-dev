@@ -1,34 +1,16 @@
 import styled from "styled-components";
-import BaseContainer from "../components/base/BaseContainer";
+import AppContainer from "../components/AppContainer";
+import AppTitle from "../components/AppTitle";
 import BaseButton from "../components/base/BaseButton";
 import BaseSpan from "../components/base/BaseSpan";
 import BaseDiv from "../components/base/BaseDiv";
 import AppAlert from "../components/AppAlert";
 import { FaClock, FaCheckCircle } from "react-icons/fa";
-import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
-import quiz from "../data/quiz.json";
-
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-// import
-// increaseCorrectNumber,
-// resetCorrectNumber,
-// testTimeAttack,
-// "../reducers/record";
-
-const TitleH1 = styled.h1`
-  margin-bottom: 1.5rem;
-  padding: 2.5rem 0;
-  font-size: 2rem;
-  font-weight: 700;
-  text-align: center;
-  pointer-events: none;
-  user-select: none;
-  @media all and (max-width: 29.9375rem) {
-    padding: 1.5rem 0;
-    font-size: 1.5rem;
-  }
-`;
+import { Link } from "react-router-dom";
+import quiz from "../data/quiz";
+import rank from "../data/rank";
 
 const QuizContainer = styled.div`
   position: relative;
@@ -78,6 +60,9 @@ function Quiz() {
   let userId = useSelector((state) => state.login.user_id);
   const dispatch = useDispatch();
 
+  // let rankList = useSelector((state) => state.record.rank_list);
+  // console.log(rankList);
+
   const [quizzes, setQuizzes] = useState([]);
 
   const [minute, setMinute] = useState("00");
@@ -99,10 +84,23 @@ function Quiz() {
   const [alertMessage, setAlertMessage] = useState("");
   const [alertBackground, setAlertBackground] = useState("");
 
-  const mixArrayRandomly = (array) => {
-    console.log("[mixArrayRandomly]");
-    return array.sort(() => Math.random() - 0.5);
+  const [newRank, setNewRank] = useState();
+
+  const newRankObj = {
+    user_id: null,
+    correct_number: null,
+    minute: null,
+    second: null,
+    millisecond: null,
   };
+
+  const mixArrayRandomly = useCallback(
+    (array) => {
+      console.log("[mixArrayRandomly]");
+      return array.sort(() => Math.random() - 0.5);
+    },
+    [quizzes],
+  );
 
   const removeElement = (e) => {
     // console.log("[removeElement]");
@@ -117,13 +115,7 @@ function Quiz() {
 
   const countCorrect = (clickedItem, correct) => {
     console.log("[countCorrect]");
-    if (clickedItem === correct) {
-      console.log("정답");
-      // dispatch(increaseCorrectNumber());
-      setCorrectNumber((correctNumber += 1));
-    } else {
-      console.log("오답");
-    }
+    clickedItem === correct ? setCorrectNumber((correctNumber += 1)) : null;
   };
 
   const onClickMultipleChoiceView = (e, clickedItem, correct) => {
@@ -142,21 +134,21 @@ function Quiz() {
     }, 1500);
   };
 
-  const returnQuizBoxClassName = (index) =>
-    index === 0 ? "quiz-box" : "quiz-box hidden";
+  const returnQuizBoxClassName = (i) =>
+    i === 0 ? "quiz-box" : "quiz-box hidden";
 
   const createHTMLString = () => {
     // console.log("[createHTMLString]");
     const result = [];
-    for (let index = 0; index < 10; index++) {
+    for (let i = 0; i < 10; i++) {
       result.push(
         <BaseDiv
-          className={returnQuizBoxClassName(index)}
+          className={returnQuizBoxClassName(i)}
           padding={"0"}
-          key={index}
+          key={quizzes[i].uniq_no}
         >
           <QuizTitleH2 className='bg-dark-blue'>
-            {index + 1}.{quizzes[index]?.question}
+            {i + 1}.{quizzes[i]?.question}
           </QuizTitleH2>
           <QuizMultipleChoiceP>
             <BaseSpan
@@ -166,12 +158,12 @@ function Quiz() {
               onClick={(e) => {
                 onClickMultipleChoiceView(
                   e,
-                  quizzes[index]?.multiple_choice_view1,
-                  quizzes[index]?.correct,
+                  quizzes[i]?.multiple_choice_view1,
+                  quizzes[i]?.correct,
                 );
               }}
             >
-              ① {quizzes[index]?.multiple_choice_view1}
+              ① {quizzes[i]?.multiple_choice_view1}
             </BaseSpan>
           </QuizMultipleChoiceP>
           <QuizMultipleChoiceP>
@@ -182,12 +174,12 @@ function Quiz() {
               onClick={(e) => {
                 onClickMultipleChoiceView(
                   e,
-                  quizzes[index]?.multiple_choice_view2,
-                  quizzes[index]?.correct,
+                  quizzes[i]?.multiple_choice_view2,
+                  quizzes[i]?.correct,
                 );
               }}
             >
-              ② {quizzes[index]?.multiple_choice_view2}
+              ② {quizzes[i]?.multiple_choice_view2}
             </BaseSpan>
           </QuizMultipleChoiceP>
           <QuizMultipleChoiceP>
@@ -198,12 +190,12 @@ function Quiz() {
               onClick={(e) => {
                 onClickMultipleChoiceView(
                   e,
-                  quizzes[index]?.multiple_choice_view3,
-                  quizzes[index]?.correct,
+                  quizzes[i]?.multiple_choice_view3,
+                  quizzes[i]?.correct,
                 );
               }}
             >
-              ③ {quizzes[index]?.multiple_choice_view3}
+              ③ {quizzes[i]?.multiple_choice_view3}
             </BaseSpan>
           </QuizMultipleChoiceP>
         </BaseDiv>,
@@ -248,15 +240,46 @@ function Quiz() {
     }, 1000);
     setTimeout(() => {
       setIsReady(true);
-      setQuizzes(mixArrayRandomly(quiz.data));
+      setQuizzes(mixArrayRandomly(quiz));
       startTimer();
     }, 4000);
   };
 
-  const finishedQuiz = () => {
-    console.log("[finishedQuiz]");
-    setIsStart(true);
-    stopTimer();
+  const pushNewRank = () => {
+    newRankObj.user_id = userId;
+    newRankObj.correct_number = String(correctNumber);
+    newRankObj.minute = minute;
+    newRankObj.second = second;
+    newRankObj.millisecond = millisecond;
+    rank.push(newRankObj);
+  };
+
+  const arrangeArray = (array) => {
+    console.log("[arrangeArray]");
+    array.sort((a, b) => {
+      let aTimeTaken = a.minute + a.second + a.millisecond;
+      let bTimeTaken = b.minute + b.second + b.millisecond;
+      if (a.correct_number === b.correct_number) {
+        return aTimeTaken - bTimeTaken;
+      } else {
+        return b.correct_number - a.correct_number;
+      }
+    });
+  };
+
+  const setRank = (array) => {
+    console.log("[setRank]");
+    array.forEach((item, index) => {
+      if (
+        item.user_id === userId &&
+        item.correct_number === String(correctNumber) &&
+        item.minute === minute &&
+        item.second === second &&
+        item.millisecond === millisecond
+      ) {
+        setNewRank(index + 1);
+      }
+    });
   };
 
   const returnRecordMessage = (correctNumber) => {
@@ -278,7 +301,17 @@ function Quiz() {
     }
   };
 
+  const finishedQuiz = () => {
+    console.log("[finishedQuiz]");
+    stopTimer();
+    pushNewRank();
+    arrangeArray(rank);
+    setRank(rank);
+    setIsStart(true);
+  };
+
   const onHandleRestart = () => {
+    console.log("[onHandleRestart]");
     setCorrectNumber(0);
     setCount(3);
     setIsReady(false);
@@ -295,15 +328,15 @@ function Quiz() {
   }, []);
 
   return (
-    <BaseContainer>
-      {isAlert ? (
+    <AppContainer>
+      {isAlert && (
         <AppAlert
           color={"var(--color-white)"}
           className={alertBackground}
           message={alertMessage}
         />
-      ) : null}
-      <TitleH1>Quiz</TitleH1>
+      )}
+      <AppTitle>Quiz</AppTitle>
       {!isReady ? (
         <QuizContainer>
           <BaseDiv
@@ -341,7 +374,8 @@ function Quiz() {
                 mobileAlignItems={"flex-start"}
               >
                 <BaseSpan
-                  className='tablet-margin-bottom mobile-font-s'
+                  className='tablet-margin-bottom'
+                  mobileFontSize={"0.8rem"}
                   padding={"8px"}
                   border={"1px solid var(--color-gray-500)"}
                   borderRadius={"var(--radius-standard)"}
@@ -353,7 +387,7 @@ function Quiz() {
                   </BaseSpan>
                 </BaseSpan>
                 <BaseSpan
-                  className='mobile-font-s'
+                  mobileFontSize={"0.8rem"}
                   padding={"8px"}
                   border={"1px solid var(--color-gray-500)"}
                   borderRadius={"var(--radius-standard)"}
@@ -392,7 +426,14 @@ function Quiz() {
                   소요 시간 : {minute}:{second}:
                   <BaseSpan className={"danger"}>{millisecond}</BaseSpan>
                 </BaseSpan>
-                <BaseSpan margin={"8px"}>등수 : 없음</BaseSpan>
+                {newRank < 11 ? (
+                  <BaseSpan margin={"8px"}>
+                    등수 : <BaseSpan className={"danger"}>{newRank}</BaseSpan>{" "}
+                    등
+                  </BaseSpan>
+                ) : (
+                  <BaseSpan margin={"8px"}>등수 : 없음</BaseSpan>
+                )}
               </BaseDiv>
 
               <BaseButton className={"large"} onClick={onHandleRestart}>
@@ -402,7 +443,7 @@ function Quiz() {
           )}
         </QuizContainer>
       )}
-    </BaseContainer>
+    </AppContainer>
   );
 }
 
