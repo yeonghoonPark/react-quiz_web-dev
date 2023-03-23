@@ -71,6 +71,10 @@ body[data-theme="light"] {
     color: var(--color-black);
   }
 
+  .checked-none:hover {
+    background-color: var(--color-light-blue);
+  }
+
   .checked {
     background-color: var(--color-black);
     color: var(--color-white);
@@ -123,7 +127,24 @@ body[data-theme="dark"] {
     color: var(--color-white);
   }
 
+  .checked-none:hover {
+    background-color: var(--color-dark-blue);
+  }
+
   .checked {
+    background-color: var(--color-gray-100);
+    color: var(--color-black);
+  }
+
+  .page-button:hover {
+    background-color: var(--color-dark-blue);
+  }
+
+  [disabled].page-button:hover {
+    background: var(--color-transparent);
+  }
+
+  [aria-current].page-button {
     background-color: var(--color-gray-100);
     color: var(--color-black);
   }
