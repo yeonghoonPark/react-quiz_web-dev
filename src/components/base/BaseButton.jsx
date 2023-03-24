@@ -27,11 +27,11 @@ const StyledButton = styled.button`
     padding: 14px 18px;
   }
 
-  @media all and (min-width: 30rem) and (max-width: 47.9375rem) {
-  
+  @media all and (max-width: 47.9375rem) {
+    font-size: 0.8rem;
   }
+
   @media all and (max-width: 29.9375rem) {
-  
   }
 `;
 

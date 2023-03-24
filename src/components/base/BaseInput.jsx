@@ -2,10 +2,10 @@ import styled from "styled-components";
 
 const StyledInput = styled.input`
   all: unset;
-  width: calc(100% - 38px);
-  padding: 14px 18px;
+  width: ${(p) => p.width || "100%"};
+  padding: ${(p) => p.padding || {}};
   border: 1px solid var(--color-gray-300);
-  border-radius: 5px;
+  border-radius: var(--radius-standard);
   background: var(--color-white);
   transition: var(--transition-300);
   &:focus {
@@ -23,8 +23,11 @@ const StyledInput = styled.input`
 `;
 
 function BaseInput({
+  width,
+  padding,
   className,
   inputRef,
+  name,
   type,
   value,
   id,
@@ -35,7 +38,10 @@ function BaseInput({
   return (
     <StyledInput
       className={className}
+      width={width}
+      padding={padding}
       ref={inputRef}
+      name={name}
       type={type}
       value={value}
       id={id}

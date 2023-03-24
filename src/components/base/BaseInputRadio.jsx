@@ -31,7 +31,7 @@ function BaseInputRadio({
   children,
   onClick,
 }) {
-  console.log("[BaseInputRadio]");
+  // console.log("[BaseInputRadio]");
   return (
     <StyledLabel htmlFor={htmlFor} className={className} onClick={onClick}>
       <StyledInputRadio

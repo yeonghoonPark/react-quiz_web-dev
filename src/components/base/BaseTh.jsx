@@ -5,6 +5,9 @@ const StyledTh = styled.th`
   padding: 16px 8px;
   @media all and (max-width: 47.9375rem) {
     font-size: 0.8rem;
+    &.tablet-display-none {
+      display: none;
+    }
   }
 
   @media all and (max-width: 29.9375rem) {

@@ -6,6 +6,7 @@ const StyledSpan = styled.span`
   margin: ${(p) => p.margin || {}};
   padding: ${(p) => p.padding || {}};
   font-size: ${(p) => p.fontSize || "inherit"};
+  font-weight: ${(p) => p.fontWeight || "inherit"};
   text-align: ${(p) => p.textAlign || {}};
   border: ${(p) => p.border || {}};
   border-radius: ${(p) => p.borderRadius || {}};
@@ -47,6 +48,9 @@ const StyledSpan = styled.span`
     &.mobile-display-show {
       display: block;
     }
+    &.mobile-margin-bottom {
+      margin-bottom: 8px;
+    }
     &.mobile-margin-right {
       margin-right: 8px;
     }
@@ -59,6 +63,7 @@ function BaseSpan({
   margin,
   padding,
   fontSize,
+  fontWeight,
   mobileFontSize,
   textAlign,
   border,
@@ -76,6 +81,7 @@ function BaseSpan({
     <StyledSpan
       display={display}
       fontSize={fontSize}
+      fontWeight={fontWeight}
       mobileFontSize={mobileFontSize}
       width={width}
       margin={margin}

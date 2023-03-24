@@ -11,21 +11,48 @@ const StyledDiv = styled.div`
   height: ${(p) => p.height || {}};
   margin: ${(p) => p.margin || {}};
   padding: ${(p) => p.padding || "8px"};
+
+  font-size: ${(p) => p.fontSize || "inherit"};
+  font-weight: ${(p) => p.fontWeight || "inherit"};
+
   box-shadow: ${(p) => p.boxShadow || {}};
   transition: ${(p) => p.transition || {}};
+
+  overflow: ${(p) => p.overflow || {}};
+  white-space: ${(p) => p.whiteSpace || {}};
+  text-overflow: ${(p) => p.textOverflow || {}};
+
+  color: ${(p) => p.color || {}};
 
   &.hidden {
     display: none;
   }
 
   @media all and (max-width: 47.9375rem) {
-    display: ${(p) => (p.mobileDisplayNone ? "none" : {})};
-    flex-direction: ${(p) => p.mobileFlexDirection || {}};
-    justify-content: ${(p) => p.mobileJustifyContent || {}};
-    align-items: ${(p) => p.mobileAlignItems || {}};
+    display: ${(p) => (p.tabletDisplayNone ? "none" : {})};
+    flex-direction: ${(p) => p.tabletFlexDirection || {}};
+    justify-content: ${(p) => p.tabletJustifyContent || {}};
+    align-items: ${(p) => p.tabletAlignItems || {}};
+
+    &.tablet-display-none {
+      display: none;
+    }
+    &.tablet-margin-bottom {
+      margin-bottom: 8px;
+    }
+    &.tablet-margin-right {
+      margin-right: 8px;
+    }
   }
 
   @media all and (max-width: 29.9375rem) {
+    font-size: ${(p) => p.mobileFontSize || {}};
+    &.mobile-display-show {
+      display: block;
+    }
+    &.mobile-margin-right {
+      margin-right: 8px;
+    }
   }
 `;
 
@@ -40,12 +67,19 @@ function BaseDiv({
   minWidth,
   margin,
   padding,
+  fontSize,
+  fontWeight,
   boxShadow,
   transition,
-  mobileDisplayNone,
-  mobileFlexDirection,
-  mobileJustifyContent,
-  mobileAlignItems,
+  overflow,
+  whiteSpace,
+  textOverflow,
+  color,
+  tabletDisplayNone,
+  tabletFlexDirection,
+  tabletJustifyContent,
+  tabletAlignItems,
+  mobileFontSize,
   children,
 }) {
   return (
@@ -60,12 +94,19 @@ function BaseDiv({
       minWidth={minWidth}
       margin={margin}
       padding={padding}
+      fontSize={fontSize}
+      fontWeight={fontWeight}
       boxShadow={boxShadow}
       transition={transition}
-      mobileDisplayNone={mobileDisplayNone}
-      mobileFlexDirection={mobileFlexDirection}
-      mobileJustifyContent={mobileJustifyContent}
-      mobileAlignItems={mobileAlignItems}
+      overflow={overflow}
+      color={color}
+      whiteSpace={whiteSpace}
+      textOverflow={textOverflow}
+      tabletDisplayNone={tabletDisplayNone}
+      tabletFlexDirection={tabletFlexDirection}
+      tabletJustifyContent={tabletJustifyContent}
+      tabletAlignItems={tabletAlignItems}
+      mobileFontSize={mobileFontSize}
     >
       {children}
     </StyledDiv>

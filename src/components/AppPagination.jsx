@@ -31,11 +31,11 @@ const PageButton = styled.button`
   }
 
   @media all and (max-width: 47.9375rem) {
+    font-size: 0.8rem;
+    padding: 2px 4px;
   }
 
   @media all and (max-width: 29.9375rem) {
-    font-size: 0.8rem;
-    padding: 2px 4px;
   }
 `;
 
