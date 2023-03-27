@@ -17,9 +17,39 @@ const StyledButton = styled.button`
   cursor: pointer;
   transition: var(--transition-300);
   user-select: none;
+
   &:hover{
-    background-color: ${(p) =>
-      p.hoverBackgroundColor || "var(--color-hover-blue)"} ;
+    background-color: var(--color-hover-blue);
+  }
+
+  &.btn-red{
+    background-color: var(--color-red);
+    &:hover{
+      background-color: var(--color-hover-red);
+    }
+  }
+
+  &.btn-yellow{
+    background-color: var(--color-yellow);
+    color: var(--color-black);
+    &:hover{
+      background-color: var(--color-hover-yellow);
+    }
+  }
+
+  &.btn-green{
+    background-color: var(--color-green);
+    &:hover{
+      background-color: var(--color-hover-green);
+    }
+  }
+
+  
+  &.btn-gray-600{
+    background-color: var(--color-gray-600);
+    &:hover{
+      background-color: var(--color-hover-gray-600);
+    }
   }
 
   &.large{

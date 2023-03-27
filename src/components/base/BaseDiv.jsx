@@ -10,7 +10,10 @@ const StyledDiv = styled.div`
   min-width: ${(p) => p.minWidth || {}};
   height: ${(p) => p.height || {}};
   margin: ${(p) => p.margin || {}};
-  padding: ${(p) => p.padding || "8px"};
+  padding: ${(p) => p.padding || {}};
+  border: ${(p) => p.border || {}};
+  border-bottom: ${(p) => p.borderBottom || {}};
+  border-radius: ${(p) => p.borderRadius || {}};
 
   font-size: ${(p) => p.fontSize || "inherit"};
   font-weight: ${(p) => p.fontWeight || "inherit"};
@@ -26,6 +29,10 @@ const StyledDiv = styled.div`
 
   &.hidden {
     display: none;
+  }
+
+  &.word-break-all {
+    word-break: break-all;
   }
 
   @media all and (max-width: 47.9375rem) {
@@ -65,8 +72,12 @@ function BaseDiv({
   width,
   maxWidth,
   minWidth,
+  height,
   margin,
   padding,
+  border,
+  borderBottom,
+  borderRadius,
   fontSize,
   fontWeight,
   boxShadow,
@@ -92,8 +103,12 @@ function BaseDiv({
       width={width}
       maxWidth={maxWidth}
       minWidth={minWidth}
+      height={height}
       margin={margin}
       padding={padding}
+      border={border}
+      borderBottom={borderBottom}
+      borderRadius={borderRadius}
       fontSize={fontSize}
       fontWeight={fontWeight}
       boxShadow={boxShadow}

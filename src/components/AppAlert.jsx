@@ -14,7 +14,7 @@ const AlertMessageSpan = styled.span`
   position: absolute;
   top: 44%;
   left: 47.5%;
-  padding: 8px 32px;
+  padding: 8px 24px;
   font-size: 1.5rem;
   transform: translate(-40%, -50%);
   border-radius: var(--radius-standard);
@@ -51,7 +51,7 @@ const AlertMessageSpan = styled.span`
   }
 
   @media all and (max-width: 29.9375rem) {
-    font-size: 1.2rem;
+    font-size: 0.8rem;
   }
 `;
 

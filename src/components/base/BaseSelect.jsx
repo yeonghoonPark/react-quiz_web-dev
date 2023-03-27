@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 const StyledSelect = styled.select`
+  padding: ${(p) => p.padding || {}};
   border: 1px solid var(--color-gray-300);
   border-radius: var(--radius-standard);
 
@@ -18,9 +19,28 @@ const StyledSelect = styled.select`
   }
 `;
 
-function BaseSelect({ className, name, id, onChange, children }) {
+function BaseSelect({
+  selectRef,
+  className,
+  padding,
+  name,
+  id,
+  value,
+  defaultValue,
+  onChange,
+  children,
+}) {
   return (
-    <StyledSelect className={className} name={name} id={id} onChange={onChange}>
+    <StyledSelect
+      ref={selectRef}
+      className={className}
+      padding={padding}
+      name={name}
+      id={id}
+      value={value}
+      defaultValue={defaultValue}
+      onChange={onChange}
+    >
       {children}
     </StyledSelect>
   );

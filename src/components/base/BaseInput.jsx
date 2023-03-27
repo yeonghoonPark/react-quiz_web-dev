@@ -23,10 +23,10 @@ const StyledInput = styled.input`
 `;
 
 function BaseInput({
+  inputRef,
+  className,
   width,
   padding,
-  className,
-  inputRef,
   name,
   type,
   value,
@@ -37,10 +37,10 @@ function BaseInput({
 }) {
   return (
     <StyledInput
+      ref={inputRef}
       className={className}
       width={width}
       padding={padding}
-      ref={inputRef}
       name={name}
       type={type}
       value={value}

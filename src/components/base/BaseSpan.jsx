@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 const StyledSpan = styled.span`
   display: ${(p) => p.display || {}};
+  flex-grow: ${(p) => p.flexGrow || {}};
   width: ${(p) => p.width || "auto"};
   margin: ${(p) => p.margin || {}};
   padding: ${(p) => p.padding || {}};
@@ -11,9 +12,10 @@ const StyledSpan = styled.span`
   border: ${(p) => p.border || {}};
   border-radius: ${(p) => p.borderRadius || {}};
   background-color: ${(p) => p.backgroundColor || {}};
+  color: ${(p) => p.color || "inherit"};
   cursor: ${(p) => (p.pointer ? "pointer" : {})};
   pointer-events: ${(p) => (p.pointerEventsNone ? "none" : "auto")};
-  user-select: ${(p) => (p.userSelectNone ? "none" : "all")};
+  user-select: ${(p) => (p.userSelectNone ? "none" : "auto")};
 
   &:hover {
     text-shadow: ${(p) =>
@@ -59,6 +61,7 @@ const StyledSpan = styled.span`
 
 function BaseSpan({
   display,
+  flexGrow,
   width,
   margin,
   padding,
@@ -69,6 +72,7 @@ function BaseSpan({
   border,
   borderRadius,
   backgroundColor,
+  color,
   pointer,
   pointerEventsNone,
   userSelectNone,
@@ -80,6 +84,7 @@ function BaseSpan({
   return (
     <StyledSpan
       display={display}
+      flexGrow={flexGrow}
       fontSize={fontSize}
       fontWeight={fontWeight}
       mobileFontSize={mobileFontSize}
@@ -90,6 +95,7 @@ function BaseSpan({
       border={border}
       borderRadius={borderRadius}
       backgroundColor={backgroundColor}
+      color={color}
       pointer={pointer}
       pointerEventsNone={pointerEventsNone}
       userSelectNone={userSelectNone}
