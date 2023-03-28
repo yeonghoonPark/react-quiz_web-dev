@@ -1,12 +1,14 @@
 import styled from "styled-components";
 import AppContainer from "../../components/AppContainer";
 import AppTitle from "../../components/AppTitle";
+import AppAlert from "../../components/AppAlert";
 import BaseDiv from "../../components/base/BaseDiv";
 import BaseSpan from "../../components/base/BaseSpan";
 import BaseButton from "../../components/base/BaseButton";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import notice from "../../data/notice";
+import { useSelector } from "react-redux";
 
 const NoticeDetailContainer = styled.div`
   position: relative;
@@ -54,15 +56,42 @@ const ButtonGroupContainer = styled.div`
 `;
 
 function NoticeDetail() {
+  const storeState = useSelector((state) => state);
+
   const { uniqNo } = useParams();
   const navigate = useNavigate();
 
   const [selectedNotice, setSelectedNotice] = useState();
 
+  const [isAlert, setIsAlert] = useState(false);
+  const [alertBackgroud, setAlertBackground] = useState("");
+  const [alertMessage, setAlertMessage] = useState("");
+
   const findSelectedNotice = () => {
     notice.find(
       (cV) => cV.uniq_no === parseInt(uniqNo) && setSelectedNotice(cV),
     );
+  };
+
+  const setEditAndDeleteAlert = (message, bg) => {
+    setAlertMessage(message);
+    setAlertBackground(bg);
+    setIsAlert(true);
+    setTimeout(() => {
+      setIsAlert(false);
+    }, 1500);
+  };
+
+  const onHandleEditButton = () => {
+    selectedNotice?.author !== storeState.login.user_id
+      ? setEditAndDeleteAlert("작성자만 수정 가능합니다.", "bg-danger")
+      : navigate(`/notice/detail/edit/${uniqNo}`);
+  };
+
+  const onHandleDeleteButton = () => {
+    selectedNotice?.author !== storeState.login.user_id
+      ? setEditAndDeleteAlert("작성자만 삭제 가능합니다.", "bg-danger")
+      : console.log("정말로 삭제하겠습니까?");
   };
 
   useEffect(() => {
@@ -71,6 +100,13 @@ function NoticeDetail() {
 
   return (
     <AppContainer>
+      {isAlert && (
+        <AppAlert
+          color={"var(--color-white)"}
+          className={alertBackgroud}
+          message={alertMessage}
+        />
+      )}
       <AppTitle>{selectedNotice?.author}의 글</AppTitle>
 
       <NoticeDetailContainer>
@@ -135,11 +171,18 @@ function NoticeDetail() {
       </DateContainer>
 
       <ButtonGroupContainer>
-        <BaseButton className='btn-gray-600' onClick={() => navigate(-1)}>
+        <BaseButton
+          className='btn-gray-600'
+          onClick={() => navigate("/notice")}
+        >
           목록
         </BaseButton>
-        <BaseButton className='btn-green'>수정</BaseButton>
-        <BaseButton className='btn-red'>삭제</BaseButton>
+        <BaseButton className='btn-green' onClick={onHandleEditButton}>
+          수정
+        </BaseButton>
+        <BaseButton className='btn-red' onClick={onHandleDeleteButton}>
+          삭제
+        </BaseButton>
       </ButtonGroupContainer>
     </AppContainer>
   );
