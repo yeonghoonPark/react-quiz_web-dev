@@ -41,6 +41,10 @@ const StyledDiv = styled.div`
     justify-content: ${(p) => p.tabletJustifyContent || {}};
     align-items: ${(p) => p.tabletAlignItems || {}};
 
+    &.tablet-display-show {
+      display: block;
+    }
+
     &.tablet-display-none {
       display: none;
     }

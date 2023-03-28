@@ -34,6 +34,9 @@ const StyledSpan = styled.span`
   }
 
   @media all and (max-width: 47.9375rem) {
+    &.tablet-display-show {
+      display: block;
+    }
     &.tablet-display-none {
       display: none;
     }
