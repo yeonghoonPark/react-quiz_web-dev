@@ -56,7 +56,7 @@ const rank = [
     millisecond: "24",
   },
   {
-    user_id: "퀴즈왕",
+    user_id: "thisIsTest0466@hanmail.net",
     correct_number: "6",
     minute: "01",
     second: "08",

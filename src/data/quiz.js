@@ -1,5 +1,6 @@
 const quiz = [
   {
+    uniq_no: 1,
     count: "01",
     genre: "",
     question:
@@ -10,6 +11,7 @@ const quiz = [
     correct: "YouTube(유튜브)",
   },
   {
+    uniq_no: 2,
     count: "02",
     genre: "",
     question:
@@ -20,6 +22,7 @@ const quiz = [
     correct: "광해군",
   },
   {
+    uniq_no: 3,
     count: "03",
     genre: "",
     question:
@@ -30,6 +33,7 @@ const quiz = [
     correct: "아모르파티",
   },
   {
+    uniq_no: 4,
     count: "04",
     genre: "",
     question:
@@ -40,6 +44,7 @@ const quiz = [
     correct: "뉴딜(New Deal)",
   },
   {
+    uniq_no: 5,
     count: "05",
     genre: "",
     question:
@@ -50,6 +55,7 @@ const quiz = [
     correct: "스톡 옵션(Stock Option)",
   },
   {
+    uniq_no: 6,
     count: "06",
     genre: "",
     question:
@@ -60,6 +66,7 @@ const quiz = [
     correct: "기면증",
   },
   {
+    uniq_no: 7,
     count: "07",
     genre: "",
     question:
@@ -70,6 +77,7 @@ const quiz = [
     correct: "당뇨병",
   },
   {
+    uniq_no: 8,
     count: "08",
     genre: "",
     question:
@@ -80,6 +88,7 @@ const quiz = [
     correct: "갑상선",
   },
   {
+    uniq_no: 9,
     count: "09",
     genre: "",
     question:
@@ -90,6 +99,7 @@ const quiz = [
     correct: "Wh(와트아워)",
   },
   {
+    uniq_no: 10,
     count: "10",
     genre: "",
     question:
@@ -100,6 +110,7 @@ const quiz = [
     correct: "연행사",
   },
   {
+    uniq_no: 11,
     count: "11",
     genre: "",
     question: "세계 최초로 안락사를 합법화한 국가는 어디일까요?",
@@ -109,6 +120,7 @@ const quiz = [
     correct: "네덜란드",
   },
   {
+    uniq_no: 12,
     count: "12",
     genre: "",
     question:
@@ -119,6 +131,7 @@ const quiz = [
     correct: "핑크칼라",
   },
   {
+    uniq_no: 13,
     count: "13",
     genre: "",
     question:
@@ -129,6 +142,7 @@ const quiz = [
     correct: "갱 내 근로 업무",
   },
   {
+    uniq_no: 14,
     count: "14",
     genre: "",
     question:
@@ -139,6 +153,7 @@ const quiz = [
     correct: "역전층 현상",
   },
   {
+    uniq_no: 15,
     count: "15",
     genre: "",
     question: "리콜제도에 대한 설명으로 적절하지 않은 것은 무엇인가요?",
@@ -148,6 +163,7 @@ const quiz = [
     correct: "손해 배상 책임 제도",
   },
   {
+    uniq_no: 16,
     count: "16",
     genre: "",
     question:
@@ -158,6 +174,7 @@ const quiz = [
     correct: "쇼비니즘",
   },
   {
+    uniq_no: 17,
     count: "17",
     genre: "",
     question:
@@ -168,6 +185,7 @@ const quiz = [
     correct: "카페인",
   },
   {
+    uniq_no: 18,
     count: "18",
     genre: "",
     question:
@@ -178,6 +196,7 @@ const quiz = [
     correct: "계절풍",
   },
   {
+    uniq_no: 19,
     count: "19",
     genre: "",
     question: "다음 중 식물이 아닌 것은 무엇일까요?",
@@ -187,6 +206,7 @@ const quiz = [
     correct: "미더덕",
   },
   {
+    uniq_no: 20,
     count: "20",
     genre: "",
     question:
@@ -197,6 +217,7 @@ const quiz = [
     correct: "잘 섞이라고",
   },
   {
+    uniq_no: 21,
     count: "21",
     genre: "",
     question:
@@ -207,6 +228,7 @@ const quiz = [
     correct: "삼강오륜",
   },
   {
+    uniq_no: 22,
     count: "22",
     genre: "",
     question:
@@ -217,6 +239,7 @@ const quiz = [
     correct: "프로메테우스",
   },
   {
+    uniq_no: 23,
     count: "23",
     genre: "",
     question:
@@ -227,6 +250,7 @@ const quiz = [
     correct: "딤섬",
   },
   {
+    uniq_no: 24,
     count: "24",
     genre: "",
     question:
@@ -237,6 +261,7 @@ const quiz = [
     correct: "정묘호란",
   },
   {
+    uniq_no: 25,
     count: "25",
     genre: "",
     question:
@@ -247,6 +272,7 @@ const quiz = [
     correct: "평화상",
   },
   {
+    uniq_no: 26,
     count: "26",
     genre: "",
     question:
@@ -257,6 +283,7 @@ const quiz = [
     correct: "리트머스 종이",
   },
   {
+    uniq_no: 27,
     count: "27",
     genre: "",
     question:
@@ -267,6 +294,7 @@ const quiz = [
     correct: "새집증후군",
   },
   {
+    uniq_no: 28,
     count: "28",
     genre: "",
     question:
@@ -277,6 +305,7 @@ const quiz = [
     correct: "비문증",
   },
   {
+    uniq_no: 29,
     count: "29",
     genre: "",
     question:
@@ -287,6 +316,7 @@ const quiz = [
     correct: "피닉스",
   },
   {
+    uniq_no: 30,
     count: "30",
     genre: "",
     question:
