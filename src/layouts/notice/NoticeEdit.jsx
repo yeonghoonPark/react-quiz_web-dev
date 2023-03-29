@@ -49,7 +49,7 @@ const ButtonGroupContainer = styled.div`
 `;
 
 function NoticeEdit() {
-  console.log("[NoticeEdit]");
+  // console.log("[NoticeEdit]");
 
   const CLASSNAME_ANNOUNCEMENT = "announcement";
   const CLASSNAME_CHITCHAT = "chitchat";

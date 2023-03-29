@@ -20,14 +20,22 @@
   --color-pink: #d63384;
   --color-orange: #e06c75;
   --color-peach: #f07474;
+  --color-yellow: #ffc107;
   --color-blue: #0d6efd;
+  --color-green: #198754;
   --color-dark-blue: #1b1b1f;
   --color-light-blue: #eff0ff;
   --color-sky: #5dbdfd;
+  --color-sky-blue: #cfe2ff;
+  --color-sky-light-blue: #cff4fc;
   --color-light-green: #d1e7dd;
   --color-light-red: #f8d7da;
 
+  --color-hover-red: #bb2d3b;
+  --color-hover-yellow: #ffca2c;
   --color-hover-blue: #0b5ed7;
+  --color-hover-green: #157347;
+  --color-hover-gray-600: #5c636a;
   --color-hover-fink: #d85555;
   --color-hover-light-green: #5fad72;
 
@@ -64,6 +72,14 @@ body[data-theme="light"] {
 
   .bg-primary {
     background-color: var(--color-blue);
+  }
+
+  .bg-sky {
+    background-color: var(--color-sky-blue);
+  }
+
+  .bg-success {
+    background-color: var(--color-green);
   }
 
   .checked-none {
@@ -108,6 +124,14 @@ body[data-theme="dark"] {
 
   .bg-primary {
     background-color: var(--color-sky);
+  }
+
+  .bg-sky {
+    background-color: var(--color-sky-light-blue);
+  }
+
+  .bg-success {
+    background-color: var(--color-hover-light-green);
   }
 
   .bg-gray-100 {

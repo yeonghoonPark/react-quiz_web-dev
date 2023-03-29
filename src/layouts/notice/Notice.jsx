@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import AppContainer from "../../components/AppContainer";
 import AppTitle from "../../components/AppTitle";
+import AppCard from "../../components/AppCard";
 import AppPagination from "../../components/AppPagination";
 import BaseInputRadio from "../../components/base/BaseInputRadio";
 import BaseTr from "../../components/base/BaseTr";
@@ -11,8 +12,9 @@ import BaseSpan from "../../components/base/BaseSpan";
 import BaseInput from "../../components/base/BaseInput";
 import BaseSelect from "../../components/base/BaseSelect";
 import BaseButton from "../../components/base/BaseButton";
-import { Link } from "react-router-dom";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import tapMenu from "../../data/tapMenu";
 import notice from "../../data/notice";
 
@@ -45,8 +47,6 @@ const NoticeTable = styled.table`
 `;
 
 const NoticeTableThead = styled.thead`
-  position: sticky;
-  top: 0;
   color: white;
   background-color: var(--color-black);
   transition: var(--transition-300);
@@ -75,6 +75,8 @@ function Notice() {
   const CLASSNAME_TITLE = "title";
   const CLASSNAME_AUTHOR = "author";
 
+  const userId = useSelector((state) => state.login.user_id);
+
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const [limit, setLimit] = useState(5);
@@ -86,6 +88,10 @@ function Notice() {
 
   const [optionValue, setOptionValue] = useState(CLASSNAME_TITLE);
   const [inputValueSearch, setInputValueSearch] = useState("");
+
+  const [isAppCard, setIsAppCard] = useState(false);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     setCheckedTapMenu(CLASSNAME_TOTAL);
@@ -114,7 +120,7 @@ function Notice() {
   const onHandleSearch = () => {
     const newNotice = [];
     if (optionValue === CLASSNAME_TITLE) {
-      notice.forEach((cV) => {
+      notice.filter((cV) => {
         if (
           cV.title.toLowerCase().indexOf(inputValueSearch.toLowerCase()) !== -1
         ) {
@@ -126,7 +132,7 @@ function Notice() {
         }
       });
     } else if (optionValue === CLASSNAME_AUTHOR) {
-      notice.forEach((cV) => {
+      notice.filter((cV) => {
         if (
           cV.author.toLowerCase().indexOf(inputValueSearch.toLowerCase()) !== -1
         ) {
@@ -141,8 +147,25 @@ function Notice() {
     setNotices(newNotice);
   };
 
+  const onHandleWriteButton = () => {
+    if (!userId) {
+      setIsAppCard(true);
+      return;
+    }
+    navigate("/notice/write");
+  };
+
   return (
     <AppContainer>
+      {isAppCard && (
+        <AppCard
+          message={
+            "로그인 후 글 작성이 가능합니다, 로그인페이지로 이동하시겠습니까?"
+          }
+          onClickCancle={() => setIsAppCard(false)}
+          onClickConfirm={() => navigate("/login")}
+        />
+      )}
       <AppTitle>Notice</AppTitle>
 
       <RadioGroupContainer>
@@ -187,6 +210,7 @@ function Notice() {
                   key={cV.uniq_no}
                   className='multiple-choice'
                   cursorPointer
+                  onClick={() => navigate(`/notice/detail/${cV.uniq_no}`)}
                 >
                   <BaseTd>
                     <BaseSpan
@@ -206,7 +230,7 @@ function Notice() {
                   >
                     <BaseSpan userSelectNone>{cV.title}</BaseSpan>
                     <BaseDiv
-                      className='mobile-display-show'
+                      className='tablet-display-show'
                       display={"none"}
                       padding={"0"}
                       whiteSpace={"nowrap"}
@@ -262,8 +286,10 @@ function Notice() {
           onChange={(e) => setInputValueSearch(e.target.value)}
           onKeyUp={(e) => e.key === "Enter" && onHandleSearch()}
         />
-        <BaseButton onClick={() => onHandleSearch()}>검색</BaseButton>
-        <BaseButton>글 작성</BaseButton>
+        <BaseButton className='btn-yellow' onClick={() => onHandleSearch()}>
+          검색
+        </BaseButton>
+        <BaseButton onClick={onHandleWriteButton}>글 작성</BaseButton>
       </SearchGroupContainer>
 
       <AppPagination

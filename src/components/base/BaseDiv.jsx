@@ -95,6 +95,7 @@ function BaseDiv({
   tabletJustifyContent,
   tabletAlignItems,
   mobileFontSize,
+  onClick,
   children,
 }) {
   return (
@@ -126,6 +127,7 @@ function BaseDiv({
       tabletJustifyContent={tabletJustifyContent}
       tabletAlignItems={tabletAlignItems}
       mobileFontSize={mobileFontSize}
+      onClick={onClick}
     >
       {children}
     </StyledDiv>

@@ -1,5 +1,6 @@
 import styled from "styled-components";
-import BaseContainer from "../components/base/BaseContainer";
+import AppContainer from "../components/AppContainer";
+import AppTitle from "../components/AppTitle";
 import BaseDiv from "../components/base/BaseDiv";
 import BaseInput from "../components/base/BaseInput";
 import BaseButton from "../components/base/BaseButton";
@@ -10,22 +11,9 @@ import GoogleLogin from "react-google-login";
 import { gapi } from "gapi-script";
 import { useRef, useLayoutEffect, useState, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { onLogin } from "../reducers/login";
+import { onLogin, getAccessToken } from "../reducers/login";
 import { useNavigate } from "react-router-dom";
-
-const TitleH1 = styled.h1`
-  margin-bottom: 1.5rem;
-  padding: 2.5rem 0;
-  font-size: 2rem;
-  font-weight: 700;
-  text-align: center;
-  pointer-events: none;
-  user-select: none;
-  @media all and (max-width: 29.9375rem) {
-    padding: 1.5rem 0;
-    font-size: 1.5rem;
-  }
-`;
+import AppAlert from "../components/AppAlert";
 
 const LoginForm = styled.form`
   display: flex;
@@ -54,11 +42,8 @@ const ImageBoxDiv = styled.div`
 `;
 
 function Login() {
-  console.log("[Login]");
+  // console.log("[Login]");
 
-  // state's
-  // let userId = useSelector((state) => state.login.user_id);
-  // let userPassword = useSelector((state) => state.login.user_password);
   const storeState = useSelector((state) => state);
   const dispatch = useDispatch();
 
@@ -71,27 +56,40 @@ function Login() {
   const [isNoneId, setIsNoneId] = useState(false);
   const [isNonePassword, setIsNonePassword] = useState(false);
 
+  const [isAlert, setIsAlert] = useState(false);
+  const [alertBackgroud, setAlertBackground] = useState("");
+  const [alertMessage, setAlertMessage] = useState("");
+
   const navigate = useNavigate();
 
   const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
-  // function's
+  const setLoginAlert = (message, bg) => {
+    setAlertMessage(message);
+    setAlertBackground(bg);
+    setIsAlert(true);
+    setTimeout(() => {
+      setIsAlert(false);
+      navigate("/");
+    }, 1500);
+  };
+
   const onHandleLogin = (e) => {
-    console.log("[onHandleLogin]");
+    // console.log("[onHandleLogin]");
     e.preventDefault();
     if (inputValueId === "") {
       setIsNoneId(true);
       inputRefId.current.focus();
+      return;
     } else if (inputValuePassword === "") {
       setIsNonePassword(true);
       inputRefPassword.current.focus();
+      return;
     } else {
-      // userId = inputValueId;
-      // userPassword = inputValuePassword;
       storeState.login.user_id = inputValueId;
       storeState.login.user_password = inputRefPassword;
       dispatch(onLogin());
-      navigate("/");
+      setLoginAlert("로그인에 성공하였습니다.", "bg-primary");
     }
   };
 
@@ -102,10 +100,12 @@ function Login() {
         Kakao.API.request({
           url: "/v2/user/me",
           success: function (res) {
-            console.log(res, "response");
+            // console.log(res, "response");
             storeState.login.user_id = res.kakao_account.email;
+            storeState.login.access_token = auth.access_token;
             dispatch(onLogin());
-            navigate("/");
+            dispatch(getAccessToken());
+            setLoginAlert("카카오로그인에 성공하였습니다.", "bg-primary");
           },
           fail: function (err) {
             alert(
@@ -116,21 +116,21 @@ function Login() {
         });
       },
       fail: function (err) {
-        console.log(err);
+        // console.log(err);
       },
     });
   };
 
   const googleLoginTest = {
     googleLoginTestSuccess: function (res) {
-      console.log(res);
-      console.log(res.wt.cu, "이메일");
+      // console.log(res);
+      // console.log(res.wt.cu, "이메일");
       storeState.login.user_id = res.wt.cu;
       dispatch(onLogin());
-      navigate("/");
+      setLoginAlert("구글로그인에 성공하였습니다.", "bg-primary");
     },
     googleLoginTestFailure: function (err) {
-      console.log(err);
+      // console.log(err);
     },
   };
 
@@ -139,22 +139,31 @@ function Login() {
   }, []);
 
   return (
-    <BaseContainer>
-      <TitleH1>Login</TitleH1>
+    <AppContainer>
+      {isAlert && (
+        <AppAlert
+          color={"var(--color-white)"}
+          className={alertBackgroud}
+          message={alertMessage}
+        />
+      )}
+      <AppTitle>Login</AppTitle>
 
       <LoginForm>
         <BaseDiv width={"33%"} minWidth={"314px"} padding={"8px 0"}>
-          <label htmlFor='userId' style={{ display: "none" }} />
+          <label htmlFor='user-id' style={{ display: "none" }} />
           <BaseInput
             className='black'
+            width={"calc(100% - 38px)"}
+            padding={"14px 18px"}
             inputRef={inputRefId}
             type={"text"}
             value={inputValueId}
-            id={"userId"}
+            id={"user-id"}
             placeholder={"아이디 또는 이메일"}
             onChange={(e) => setInputValueId(e.target.value)}
           />
-          {isNoneId ? (
+          {isNoneId && (
             <BaseSpan
               className='danger'
               display={"block"}
@@ -163,20 +172,22 @@ function Login() {
             >
               아이디 또는 이메일을 입력해주세요.
             </BaseSpan>
-          ) : null}
+          )}
         </BaseDiv>
         <BaseDiv width={"33%"} minWidth={"314px"} padding={"8px 0"}>
-          <label htmlFor='userPassword' style={{ display: "none" }} />
+          <label htmlFor='user-password' style={{ display: "none" }} />
           <BaseInput
             className='black'
+            width={"calc(100% - 38px)"}
+            padding={"14px 18px"}
             inputRef={inputRefPassword}
             type={"password"}
             value={inputValuePassword}
-            id={"userPassword"}
+            id={"user-password"}
             placeholder={"비밀번호"}
             onChange={(e) => setInputValuePassword(e.target.value)}
           />
-          {isNonePassword ? (
+          {isNonePassword && (
             <BaseSpan
               className='danger'
               display={"block"}
@@ -185,7 +196,7 @@ function Login() {
             >
               비밀번호를 입력해주세요.
             </BaseSpan>
-          ) : null}
+          )}
         </BaseDiv>
         <BaseDiv width={"33%"} minWidth={"314px"} padding={"8px 0"}>
           <BaseButton
@@ -252,7 +263,7 @@ function Login() {
           </ImageBoxDiv>
         </BaseDiv>
       </SocialLoginDiv>
-    </BaseContainer>
+    </AppContainer>
   );
 }
 

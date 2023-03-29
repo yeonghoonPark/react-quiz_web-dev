@@ -1,32 +1,23 @@
 import styled from "styled-components";
-import BaseContainer from "../components/base/BaseContainer";
+import logo from "../../public/assets/images/logo.png";
+import AppContainer from "../components/AppContainer";
+import AppTitle from "../components/AppTitle";
 import BaseDiv from "../components/base/BaseDiv";
 import BaseSpan from "../components/base/BaseSpan";
 import BaseButton from "../components/base/BaseButton";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-const TitleH1 = styled.h1`
-  margin-bottom: 1.5rem;
-  padding: 2.5rem 0;
-  font-size: 2rem;
-  font-weight: 700;
-  text-align: center;
-  pointer-events: none;
-  @media all and (max-width: 29.9375rem) {
-    padding: 1.5rem 0;
-    font-size: 1.5rem;
-  }
-`;
-
 const LogoDiv = styled.div`
   width: 200px;
   height: 165px;
   margin: 0 auto 1.5rem;
-  background-image: url(../../public/assets/images/logo.png);
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
+`;
+
+const Img = styled.img`
+  widht: 100%;
+  height: 100%;
+  object-fit: contain;
 `;
 
 const SubTitleH2 = styled.h2`
@@ -39,12 +30,12 @@ const SubTitleH2 = styled.h2`
     font-size: 2.5rem;
   }
   @media all and (max-width: 29.9375rem) {
-    font-size: 1.2rem;
+    font-size: 1.5rem;
   }
 `;
 
 const SubTitleP = styled.p`
-  margin: 0 auto 4rem;
+  margin: 0 auto 3.5rem;
   padding: 0 4rem;
   text-align: center;
   @media all and (max-width: 47.9375rem) {
@@ -56,18 +47,20 @@ const SubTitleP = styled.p`
 `;
 
 function Home() {
-  console.log("[Home]");
+  // console.log("[Home]");
 
   const storeState = useSelector((state) => state);
 
   return (
-    <BaseContainer>
+    <AppContainer>
       {storeState.login.user_id ? (
-        <TitleH1>Welcome {storeState.login.user_id}</TitleH1>
+        <AppTitle>Welcome {storeState.login.user_id}</AppTitle>
       ) : (
-        <TitleH1>Welcome Your visit</TitleH1>
+        <AppTitle>Welcome Your visit</AppTitle>
       )}
-      <LogoDiv />
+      <LogoDiv>
+        <Img src={logo} alt='logo' />
+      </LogoDiv>
 
       <BaseDiv width={"80%"} padding={"8px 8px 0"} margin={"0 auto"}>
         <SubTitleH2>
@@ -91,7 +84,7 @@ function Home() {
           <BaseButton className={"large"}>Quiz Start</BaseButton>
         </Link>
       </BaseDiv>
-    </BaseContainer>
+    </AppContainer>
   );
 }
 

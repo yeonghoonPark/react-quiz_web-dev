@@ -11,12 +11,12 @@ const StyledAppAlert = styled.div`
 `;
 
 const AlertMessageSpan = styled.span`
-  position: absolute;
-  top: 44%;
-  left: 47.5%;
+  position: fixed;
+  top: 40%;
+  left: 50%;
   padding: 8px 24px;
   font-size: 1.5rem;
-  transform: translate(-40%, -50%);
+  transform: translate(-50%, -40%);
   border-radius: var(--radius-standard);
   opacity: 0;
   transition: 0.3s;
@@ -30,22 +30,22 @@ const AlertMessageSpan = styled.span`
     }
 
     12% {
-      transform: translate(-40%, -50%);
+      transform: translate(-50%, -40%);
       opacity: 1;
     }
 
     30% {
-      transform: translate(-40%, -50%);
+      transform: translate(-50%, -40%);
       opacity: 1;
     }
 
     80% {
-      transform: translate(-40%, -50%);
+      transform: translate(-50%, -40%);
       opacity: 1;
     }
 
     100% {
-      transform: translate(-40%, -50%);
+      transform: translate(-50%, -40%);
       opacity: 0;
     }
   }

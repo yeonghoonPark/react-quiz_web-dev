@@ -2,10 +2,11 @@ import styled from "styled-components";
 import AppContainer from "../../components/AppContainer";
 import AppTitle from "../../components/AppTitle";
 import AppAlert from "../../components/AppAlert";
+import AppCard from "../../components/AppCard";
 import BaseDiv from "../../components/base/BaseDiv";
 import BaseSpan from "../../components/base/BaseSpan";
 import BaseButton from "../../components/base/BaseButton";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import notice from "../../data/notice";
 import { useSelector } from "react-redux";
@@ -56,6 +57,7 @@ const ButtonGroupContainer = styled.div`
 `;
 
 function NoticeDetail() {
+  // console.log("[NoticeDetail]");
   const storeState = useSelector((state) => state);
 
   const { uniqNo } = useParams();
@@ -66,6 +68,8 @@ function NoticeDetail() {
   const [isAlert, setIsAlert] = useState(false);
   const [alertBackgroud, setAlertBackground] = useState("");
   const [alertMessage, setAlertMessage] = useState("");
+
+  const [isAppCard, setIsAppCard] = useState(false);
 
   const findSelectedNotice = () => {
     notice.find(
@@ -91,7 +95,18 @@ function NoticeDetail() {
   const onHandleDeleteButton = () => {
     selectedNotice?.author !== storeState.login.user_id
       ? setEditAndDeleteAlert("작성자만 삭제 가능합니다.", "bg-danger")
-      : console.log("정말로 삭제하겠습니까?");
+      : setIsAppCard(true);
+  };
+
+  const deleteData = () => {
+    // console.log("[deleteData]");
+    const index = notice.findIndex((cV) => cV.uniq_no === parseInt(uniqNo));
+    notice.splice(index, 1);
+    setIsAppCard(false);
+    setEditAndDeleteAlert("글 삭제가 완료되었습니다.", "bg-success");
+    setTimeout(() => {
+      navigate("/notice");
+    }, 1500);
   };
 
   useEffect(() => {
@@ -105,6 +120,15 @@ function NoticeDetail() {
           color={"var(--color-white)"}
           className={alertBackgroud}
           message={alertMessage}
+        />
+      )}
+      {isAppCard && (
+        <AppCard
+          message={
+            "한 번 삭제한 자료는 복구 할 수 없습니다, 그래도 삭제하시겠습니까?"
+          }
+          onClickCancle={() => setIsAppCard(false)}
+          onClickConfirm={deleteData}
         />
       )}
       <AppTitle>{selectedNotice?.author}의 글</AppTitle>

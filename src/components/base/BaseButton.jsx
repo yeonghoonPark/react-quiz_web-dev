@@ -80,6 +80,7 @@ function BaseButton({
   hoverBackgroundColor,
   fontSize,
   onClick,
+  onKeyUp,
   children,
 }) {
   return (
@@ -98,6 +99,7 @@ function BaseButton({
       hoverBackgroundColor={hoverBackgroundColor}
       fontSize={fontSize}
       onClick={onClick}
+      onKeyUp={onKeyUp}
     >
       {children}
     </StyledButton>

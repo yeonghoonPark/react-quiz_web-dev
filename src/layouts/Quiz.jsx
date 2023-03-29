@@ -1,14 +1,15 @@
 import styled from "styled-components";
 import AppContainer from "../components/AppContainer";
 import AppTitle from "../components/AppTitle";
+import AppAlert from "../components/AppAlert";
+import AppCard from "../components/AppCard";
 import BaseButton from "../components/base/BaseButton";
 import BaseSpan from "../components/base/BaseSpan";
 import BaseDiv from "../components/base/BaseDiv";
-import AppAlert from "../components/AppAlert";
 import { FaClock, FaCheckCircle } from "react-icons/fa";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import quiz from "../data/quiz";
 import rank from "../data/rank";
 
@@ -55,13 +56,11 @@ const QuizMultipleChoiceP = styled.p`
 `;
 
 function Quiz() {
-  console.log("[Quiz]");
-  // const correctNumber = useSelector((state) => state.record.correct_number);
-  let userId = useSelector((state) => state.login.user_id);
-  const dispatch = useDispatch();
+  // console.log("[Quiz]");
 
-  // let rankList = useSelector((state) => state.record.rank_list);
-  // console.log(rankList);
+  const userId = useSelector((state) => state.login.user_id);
+
+  const navigate = useNavigate();
 
   const [quizzes, setQuizzes] = useState([]);
 
@@ -84,6 +83,8 @@ function Quiz() {
   const [alertMessage, setAlertMessage] = useState("");
   const [alertBackground, setAlertBackground] = useState("");
 
+  const [isAppCard, setIsAppCard] = useState(false);
+
   const [newRank, setNewRank] = useState();
 
   const newRankObj = {
@@ -96,7 +97,7 @@ function Quiz() {
 
   const mixArrayRandomly = useCallback(
     (array) => {
-      console.log("[mixArrayRandomly]");
+      // console.log("[mixArrayRandomly]");
       return array.sort(() => Math.random() - 0.5);
     },
     [quizzes],
@@ -114,7 +115,7 @@ function Quiz() {
   };
 
   const countCorrect = (clickedItem, correct) => {
-    console.log("[countCorrect]");
+    // console.log("[countCorrect]");
     clickedItem === correct ? setCorrectNumber((correctNumber += 1)) : null;
   };
 
@@ -207,7 +208,7 @@ function Quiz() {
   const addZero = (number) => (number < 10 ? "0" + number : "" + number);
 
   const startTimer = () => {
-    console.log("[startTimer]");
+    // console.log("[startTimer]");
     let startingPoint = Date.now();
     setTimerInterval(
       setInterval(() => {
@@ -222,13 +223,17 @@ function Quiz() {
   };
 
   const stopTimer = () => {
-    console.log("[stopTimer]");
+    // console.log("[stopTimer]");
     clearInterval(timerInterval);
     setIsStart(true);
   };
 
   const onHandleStart = () => {
-    console.log("[onHandleStart]");
+    // console.log("[onHandleStart]");
+    if (!userId) {
+      setIsAppCard(true);
+      return;
+    }
     setIsCountdown(true);
     countIntervalRef.current = setInterval(() => {
       setCount((count -= 1));
@@ -255,7 +260,7 @@ function Quiz() {
   };
 
   const arrangeArray = (array) => {
-    console.log("[arrangeArray]");
+    // console.log("[arrangeArray]");
     array.sort((a, b) => {
       let aTimeTaken = a.minute + a.second + a.millisecond;
       let bTimeTaken = b.minute + b.second + b.millisecond;
@@ -268,7 +273,7 @@ function Quiz() {
   };
 
   const setRank = (array) => {
-    console.log("[setRank]");
+    // console.log("[setRank]");
     array.forEach((item, index) => {
       if (
         item.user_id === userId &&
@@ -302,7 +307,7 @@ function Quiz() {
   };
 
   const finishedQuiz = () => {
-    console.log("[finishedQuiz]");
+    // console.log("[finishedQuiz]");
     stopTimer();
     pushNewRank();
     arrangeArray(rank);
@@ -311,7 +316,7 @@ function Quiz() {
   };
 
   const onHandleRestart = () => {
-    console.log("[onHandleRestart]");
+    // console.log("[onHandleRestart]");
     setCorrectNumber(0);
     setCount(3);
     setIsReady(false);
@@ -334,6 +339,15 @@ function Quiz() {
           color={"var(--color-white)"}
           className={alertBackground}
           message={alertMessage}
+        />
+      )}
+      {isAppCard && (
+        <AppCard
+          message={
+            "로그인 후 퀴즈이용이 가능합니다, 로그인페이지로 이동하시겠습니까?"
+          }
+          onClickCancle={() => setIsAppCard(false)}
+          onClickConfirm={() => navigate("/login")}
         />
       )}
       <AppTitle>Quiz</AppTitle>
@@ -370,8 +384,8 @@ function Quiz() {
                 justifyContent={"space-between"}
                 alignItems={"center"}
                 padding={"0 0 1.5rem"}
-                mobileFlexDirection={"column"}
-                mobileAlignItems={"flex-start"}
+                tabletFlexDirection={"column"}
+                tabletAlignItems={"flex-start"}
               >
                 <BaseSpan
                   className='tablet-margin-bottom'

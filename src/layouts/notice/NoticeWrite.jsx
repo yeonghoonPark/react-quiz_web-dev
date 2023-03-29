@@ -8,9 +8,9 @@ import BaseSelect from "../../components/base/BaseSelect";
 import BaseInput from "../../components/base/BaseInput";
 import BaseTextarea from "../../components/base/BaseTextarea";
 import BaseButton from "../../components/base/BaseButton";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import notice from "../../data/notice";
 
 const NoticeWriteContainer = styled.form`
@@ -49,7 +49,7 @@ const ButtonGroupContainer = styled.div`
 `;
 
 function NoticeWrite() {
-  console.log("[NoticeWrite]");
+  // console.log("[NoticeWrite]");
 
   const CLASSNAME_CHITCHAT = "chitchat";
   const CLASSNAME_REQUEST = "request";
@@ -102,7 +102,7 @@ function NoticeWrite() {
   };
 
   const saveData = () => {
-    console.log("[saveData]");
+    // console.log("[saveData]");
     if (optionValue === "") {
       setWriteAlert("글 분류를 선택해주세요.", "bg-danger", selectRef);
       return;

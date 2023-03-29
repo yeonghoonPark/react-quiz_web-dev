@@ -11,7 +11,6 @@ const StyledTr = styled.tr`
     border-bottom: none;
   }
 `;
-// border-bottom: 1px solid transparent;
 
 function BaseTr({ className, cursorPointer, onClick, children }) {
   return (
