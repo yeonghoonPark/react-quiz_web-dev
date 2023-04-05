@@ -5,6 +5,10 @@ const PaginationContainer = styled.div`
   justify-content: center;
   align-items: center;
   gap: 12px;
+
+  @media all and (max-width: 29.9375rem) {
+    gap: 6px;
+  }
 `;
 
 const PageButton = styled.button`
@@ -20,11 +24,12 @@ const PageButton = styled.button`
   &[disabled] {
     color: var(--color-gray-500);
     cursor: revert;
+    &:hover {
+      background: var(--color-transparent);
+      cursor: revert;
+    }
   }
-  &[disabled]:hover {
-    background: var(--color-transparent);
-    cursor: revert;
-  }
+
   &[aria-current] {
     background: var(--color-black);
     color: var(--color-white);
@@ -39,37 +44,73 @@ const PageButton = styled.button`
   }
 `;
 
-function AppPagination({ total, limit, currentPage, setCurrentPage }) {
-  const pageNumber = Math.ceil(total / limit);
+function AppPagination({
+  totalLength,
+  perPageItems,
+  currentPage,
+  setCurrentPage,
+  maxNumOfBtnLimit,
+  setMaxNumOfBtnLimit,
+  minNumOfBtnLimit,
+  setMinNumOfBtnLimit,
+}) {
+  // console.log("[AppPagination]");
+  const perPageBtnNum = Math.ceil(totalLength / perPageItems);
+  const btnLimit = 5;
+
+  const createHTMLBtns = () => {
+    const result = [];
+    for (let i = 1; i <= perPageBtnNum; i++) {
+      if (i < maxNumOfBtnLimit + 1 && i > minNumOfBtnLimit) {
+        result.push(
+          <PageButton
+            className='page-button'
+            key={i + 1}
+            aria-current={currentPage === i ? "page" : null}
+            onClick={() => setCurrentPage(i)}
+          >
+            {i}
+          </PageButton>,
+        );
+      }
+    }
+    return result;
+  };
+
+  const onHandlePrevBtn = () => {
+    setCurrentPage(currentPage - 1);
+    if ((currentPage - 1) % btnLimit === 0) {
+      setMaxNumOfBtnLimit(maxNumOfBtnLimit - btnLimit);
+      setMinNumOfBtnLimit(minNumOfBtnLimit - btnLimit);
+    }
+  };
+
+  const onHandleNextBtn = () => {
+    setCurrentPage(currentPage + 1);
+    if (currentPage + 1 > maxNumOfBtnLimit) {
+      setMaxNumOfBtnLimit(maxNumOfBtnLimit + btnLimit);
+      setMinNumOfBtnLimit(minNumOfBtnLimit + btnLimit);
+    }
+  };
+
   return (
     <PaginationContainer>
       <PageButton
         className='page-button'
-        onClick={() => setCurrentPage(currentPage - 1)}
+        onClick={onHandlePrevBtn}
         disabled={currentPage === 1}
       >
-        &lt; 이전
+        &lt; Prev
       </PageButton>
-      {Array(pageNumber)
-        .fill()
-        .map((_cV, i) => {
-          return (
-            <PageButton
-              className='page-button'
-              key={i}
-              onClick={() => setCurrentPage(i + 1)}
-              aria-current={currentPage === i + 1 ? "currentPage" : null}
-            >
-              {i + 1}
-            </PageButton>
-          );
-        })}
+
+      {createHTMLBtns()}
+
       <PageButton
         className='page-button'
-        onClick={() => setCurrentPage(currentPage + 1)}
-        disabled={currentPage === pageNumber}
+        onClick={onHandleNextBtn}
+        disabled={currentPage === perPageBtnNum}
       >
-        다음 &gt;
+        Next &gt;
       </PageButton>
     </PaginationContainer>
   );

@@ -77,11 +77,14 @@ function Notice() {
 
   const userId = useSelector((state) => state.login.user_id);
 
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentTapIndex, setCurrentTapIndex] = useState(0);
 
-  const [limit, setLimit] = useState(5);
   const [currentPage, setCurrentPage] = useState(1);
-  const offset = (currentPage - 1) * limit;
+  const perPageItems = 5;
+  const lastIndexOfPerPageItem = currentPage * perPageItems;
+  const firstIndexOfPerPageItem = lastIndexOfPerPageItem - perPageItems;
+  const [maxNumOfBtnLimit, setMaxNumOfBtnLimit] = useState(5);
+  const [minNumOfBtnLimit, setMinNumOfBtnLimit] = useState(0);
 
   const [notices, setNotices] = useState([]);
   const [checkedTapMenu, setCheckedTapMenu] = useState();
@@ -99,8 +102,10 @@ function Notice() {
   }, [checkedTapMenu]);
 
   const onHandleTapMenu = (i) => {
-    setCurrentIndex(i);
+    setCurrentTapIndex(i);
     setCurrentPage(1);
+    setMaxNumOfBtnLimit(5);
+    setMinNumOfBtnLimit(0);
   };
 
   const setCheckedArray = (arr, newArr) => {
@@ -181,7 +186,7 @@ function Notice() {
                 onHandleTapMenu(i);
                 setCheckedTapMenu(cV.value);
               }}
-              className={currentIndex === i ? "checked" : "checked-none"}
+              className={currentTapIndex === i ? "checked" : "checked-none"}
             >
               {cV.message}
             </BaseInputRadio>
@@ -204,67 +209,69 @@ function Notice() {
             </BaseTr>
           </NoticeTableThead>
           <tbody>
-            {notices.slice(offset, offset + limit).map((cV) => {
-              return (
-                <BaseTr
-                  key={cV.uniq_no}
-                  className='multiple-choice'
-                  cursorPointer
-                  onClick={() => navigate(`/notice/detail/${cV.uniq_no}`)}
-                >
-                  <BaseTd>
-                    <BaseSpan
-                      padding={"4px 8px"}
-                      border={"1px solid var(--color-gray-500)"}
-                      borderRadius={"var(--radius-standard)"}
-                      userSelectNone
-                    >
-                      {cV.article}
-                    </BaseSpan>
-                  </BaseTd>
-                  <BaseTd
-                    textAlign={"start"}
-                    whiteSpace={"nowrap"}
-                    overflow={"hidden"}
-                    textOverflow={"ellipsis"}
+            {notices
+              .slice(firstIndexOfPerPageItem, lastIndexOfPerPageItem)
+              .map((cV) => {
+                return (
+                  <BaseTr
+                    key={cV.uniq_no}
+                    className='multiple-choice'
+                    cursorPointer
+                    onClick={() => navigate(`/notice/detail/${cV.uniq_no}`)}
                   >
-                    <BaseSpan userSelectNone>{cV.title}</BaseSpan>
-                    <BaseDiv
-                      className='tablet-display-show'
-                      display={"none"}
-                      padding={"0"}
+                    <BaseTd>
+                      <BaseSpan
+                        padding={"4px 8px"}
+                        border={"1px solid var(--color-gray-500)"}
+                        borderRadius={"var(--radius-standard)"}
+                        userSelectNone
+                      >
+                        {cV.article}
+                      </BaseSpan>
+                    </BaseTd>
+                    <BaseTd
+                      textAlign={"start"}
                       whiteSpace={"nowrap"}
                       overflow={"hidden"}
                       textOverflow={"ellipsis"}
-                      fontSize={"0.6rem"}
-                      fontWeight={"500"}
-                      color={"var(--color-gray-500)"}
                     >
-                      {cV.create_date} / {cV.author}
-                    </BaseDiv>
-                  </BaseTd>
-                  <BaseTd
-                    className='tablet-display-none'
-                    whiteSpace={"nowrap"}
-                    overflow={"hidden"}
-                    textOverflow={"ellipsis"}
-                  >
-                    <BaseSpan userSelectNone fontSize={"0.8rem"}>
-                      {cV.author}
-                    </BaseSpan>
-                  </BaseTd>
-                  <BaseTd className='tablet-display-none'>
-                    <BaseSpan
-                      userSelectNone
-                      fontSize={"0.8rem"}
-                      fontWeight={"300"}
+                      <BaseSpan userSelectNone>{cV.title}</BaseSpan>
+                      <BaseDiv
+                        className='tablet-display-show'
+                        display={"none"}
+                        padding={"0"}
+                        whiteSpace={"nowrap"}
+                        overflow={"hidden"}
+                        textOverflow={"ellipsis"}
+                        fontSize={"0.6rem"}
+                        fontWeight={"500"}
+                        color={"var(--color-gray-500)"}
+                      >
+                        {cV.create_date} / {cV.author}
+                      </BaseDiv>
+                    </BaseTd>
+                    <BaseTd
+                      className='tablet-display-none'
+                      whiteSpace={"nowrap"}
+                      overflow={"hidden"}
+                      textOverflow={"ellipsis"}
                     >
-                      {cV.create_date}
-                    </BaseSpan>
-                  </BaseTd>
-                </BaseTr>
-              );
-            })}
+                      <BaseSpan userSelectNone fontSize={"0.8rem"}>
+                        {cV.author}
+                      </BaseSpan>
+                    </BaseTd>
+                    <BaseTd className='tablet-display-none'>
+                      <BaseSpan
+                        userSelectNone
+                        fontSize={"0.8rem"}
+                        fontWeight={"300"}
+                      >
+                        {cV.create_date}
+                      </BaseSpan>
+                    </BaseTd>
+                  </BaseTr>
+                );
+              })}
           </tbody>
         </NoticeTable>
       </NoticeContainer>
@@ -293,10 +300,14 @@ function Notice() {
       </SearchGroupContainer>
 
       <AppPagination
-        total={notices.length}
-        limit={limit}
         currentPage={currentPage}
+        totalLength={notices.length}
+        perPageItems={perPageItems}
         setCurrentPage={setCurrentPage}
+        maxNumOfBtnLimit={maxNumOfBtnLimit}
+        setMaxNumOfBtnLimit={setMaxNumOfBtnLimit}
+        minNumOfBtnLimit={minNumOfBtnLimit}
+        setMinNumOfBtnLimit={setMinNumOfBtnLimit}
       />
     </AppContainer>
   );
